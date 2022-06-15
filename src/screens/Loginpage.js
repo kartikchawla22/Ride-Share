@@ -4,7 +4,6 @@ import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
-import Logo from '../components/logo';
 const config = {
     fields: {
         email: {

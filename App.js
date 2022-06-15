@@ -16,7 +16,6 @@ import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
 import LoginPage from './src/screens/Loginpage';
-import Logo from './src/components/logo';
 
 
 const App: () => Node = () => {
