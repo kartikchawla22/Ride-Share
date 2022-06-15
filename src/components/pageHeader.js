@@ -1,13 +1,12 @@
 import React from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, Pressable, Text, View } from 'react-native';
-import { Icon } from "@rneui/themed";
-
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 
 const PageHeader = (props) => {
     const { config } = props;
     return (
         <View style={styles.container}>
-            <Icon style={styles.closeIcon}
+            <IconAntDesign style={styles.closeIcon}
                 name='close' />
             <Text style={styles.header}>
 

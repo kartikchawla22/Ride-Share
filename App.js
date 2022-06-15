@@ -1,9 +1,7 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Ride Share
+ * https://github.com/kartikchawla22/Ride-Share/
  *
- * @format
- * @flow strict-local
  */
 
 import React from 'react';
@@ -11,20 +9,12 @@ import type { Node } from 'react';
 import SignupPage from './src/screens/signup-page';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  useColorScheme
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
 
 

@@ -38,9 +38,9 @@ const config = {
 const SignupPage = () => {
     return (
         <View style={styles.container}>
-            {/* <View style={styles.header}>
+            <View style={styles.header}>
                 <PageHeader config={config.header}></PageHeader>
-            </View> */}
+            </View>
             <View >
                 <Input config={config.fields.name}></Input>
                 <Input config={config.fields.email}></Input>
