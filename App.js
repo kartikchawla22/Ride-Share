@@ -4,9 +4,8 @@
  *
  */
 
-import React from 'react';
-import type { Node } from 'react';
-import SignupPage from './src/screens/signup-page';
+import  React  from 'react';
+import type {Node} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -16,6 +15,7 @@ import {
 import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
+import LoginPage from './src/screens/Loginpage';
 
 
 const App: () => Node = () => {
@@ -28,8 +28,10 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <SignupPage></SignupPage>
+      
+      <LoginPage></LoginPage>
     </SafeAreaView>
   );
 };
+
 export default App;
