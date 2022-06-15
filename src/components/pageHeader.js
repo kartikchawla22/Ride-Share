@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextInput, StyleSheet, TouchableOpacity, Pressable, Text, View } from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const PageHeader = (props) => {
     const { config } = props;
@@ -9,37 +10,35 @@ const PageHeader = (props) => {
             <IconAntDesign style={styles.closeIcon}
                 name='close' />
             <Text style={styles.header}>
-
                 {config.title}</Text>
+            {!!config.rightHandButtonText ? <Text style={styles.righHandButton}>{config.rightHandButtonText}</Text> : null}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         display: "flex",
         flexDirection: "row",
         marginTop: 25,
         maxWidth: "100%",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
-
-
-        // flex: 1,
-        // justifyContent: 'flex-start'
+        flexGrow: 1
     },
     header: {
-        flex: 0.9,
-        textAlign: "center",
         fontSize: 30,
     },
     closeIcon: {
-        flex: 0.1,
         left: 10,
-        // marginLeft: 30,
-        height: 30,
-        width: 30,
+        position: "absolute",
+        fontSize: 20
+    },
+    righHandButton: {
+        right: 10,
+        position: "absolute",
+        fontSize: 15,
+        color: CSS_CONSTANTS.COLOR_PRIMARY
     }
 });
 export default PageHeader;

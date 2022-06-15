@@ -3,10 +3,10 @@ import { TextInput, StyleSheet, View, Pressable, Text } from 'react-native';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const Input = (props) => {
-    const { config } = props;
+    const { config, hasError } = props;
     return (
         <View style={styles.container}>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, hasError ? styles.hasError : null]}>
                 <TextInput
                     style={styles.inputField}
                     name={config.name}
@@ -23,6 +23,7 @@ const Input = (props) => {
                     <Pressable style={styles.inputFieldButton}><Text style={styles.showButtonText}>Show</Text></Pressable>
                     : null}
             </View>
+            {hasError ? <Text style={styles.errorMessage}>Error Message</Text> : null}
         </View>
     );
 }
@@ -56,6 +57,14 @@ const styles = StyleSheet.create({
     },
     showButtonText: {
         color: CSS_CONSTANTS.COLOR_PRIMARY
+    },
+    hasError: {
+        borderColor: CSS_CONSTANTS.ERROR_COLOR
+    },
+    errorMessage: {
+        color: CSS_CONSTANTS.ERROR_COLOR,
+        alignSelf: "flex-start",
+        marginLeft: 5
     }
 });
 export default Input;
