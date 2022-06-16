@@ -17,7 +17,7 @@ var constraints = {
         presence: true,
         length: {
             minimum: 4,
-            message: '^Invalid Password',
+            message: '^Password must be at least 4 character long',
         }
     },
     confirmPassword: {

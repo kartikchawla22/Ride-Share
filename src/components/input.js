@@ -4,9 +4,7 @@ import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const Input = (props) => {
     const { config, errorMessage } = props;
-    // let type = config.type;
     const [type, setType] = React.useState(config.type);
-    console.log('check');
     const switchPasswordMode = () => {
         if (type === "password") {
             setType("text")

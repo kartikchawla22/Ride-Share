@@ -28,8 +28,8 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      {/* <SignupPage></SignupPage> */}
-      <LoginPage></LoginPage>
+      <SignupPage></SignupPage>
+      {/* <LoginPage></LoginPage> */}
       {/* <HomePage></HomePage> */}
       {/* <ConfirmationPage message="adPostedSuccesfully"></ConfirmationPage> */}
     </SafeAreaView>
