@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
+import validate from '../utils/validation-wrapper';
 
 const config = {
     fields: {
@@ -31,30 +32,91 @@ const config = {
         }
     },
     header: {
-        title: "Signup Page"
+        title: "Signup Page",
+        closeButton: true
+    },
+    submitButton: {
+        buttonText: 'Submit',
+        roundedButton: true
     }
 }
+let formSubmitted = false;
 
 const SignupPage = () => {
+    const [email, onEmailChange] = React.useState(email);
+    const [password, onPasswordChange] = React.useState(password);
+    const [name, onNameChange] = React.useState(name);
+    const [confirmPassword, onConfirmPasswordChange] = React.useState(confirmPassword);
+
+    const [emailError, setEmailError] = React.useState(emailError);
+    const [passwordError, setPasswordError] = React.useState(passwordError);
+    const [nameError, setNameError] = React.useState(nameError);
+    const [confirmPasswordError, setConfirmPasswordError] = React.useState(confirmPasswordError);
+
+    const checkValidation = () => {
+        setEmailError(validate('email', email))
+        setPasswordError(validate('password', password))
+        setNameError(validate('name', name))
+        setConfirmPasswordError(validate(['confirmPassword', 'password'], [confirmPassword, password]))
+        formSubmitted = true;
+        if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
+            // console.log('ok report')
+        }
+    }
+
+    React.useEffect(() => {
+        if (email === "") {
+            onEmailChange(null)
+        }
+        if (formSubmitted) {
+            setEmailError(validate('email', email))
+        }
+    }, [email]);
+    React.useEffect(() => {
+        if (name === "") {
+            onNameChange(null)
+        }
+        if (formSubmitted) {
+            setNameError(validate('name', name))
+        }
+    }, [name]);
+    React.useEffect(() => {
+        if (password === "") {
+            onPasswordChange(null)
+        }
+        if (formSubmitted) {
+            setPasswordError(validate('password', password))
+        }
+    }, [password]);
+    React.useEffect(() => {
+        if (confirmPassword === "") {
+            onConfirmPasswordChange(null)
+        }
+        if (formSubmitted) {
+            setConfirmPasswordError(validate(['confirmPassword', 'password'], [confirmPassword, password]))
+        }
+    }, [confirmPassword]);
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <PageHeader config={config.header}></PageHeader>
             </View>
             <View >
-                <Input config={config.fields.name}></Input>
-                <Input config={config.fields.email}></Input>
-                <Input config={config.fields.password}></Input>
-                <Input config={config.fields.confirmPassword}></Input>
+                <Input config={config.fields.name} onChangeText={onNameChange} errorMessage={nameError}></Input>
+                <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
+                <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
+                <Input config={config.fields.confirmPassword} onChangeText={onConfirmPasswordChange} errorMessage={confirmPasswordError}></Input>
             </View>
-            <View style={styles.buttonsContainer}><CustomButton ></CustomButton></View>
+            <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
             <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
+        width: '100%',
         display: "flex",
         alignItems: 'center',
     },

@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import Input from '../components/input';
-import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
+import validate from '../utils/validation-wrapper';
 const config = {
     fields: {
         email: {
@@ -23,27 +23,53 @@ const config = {
             textContentType: "newPassword", //iOS
         }
     },
-    header: {
-        title: "LoginPage"
+    submitButton: {
+        buttonText: 'Log in',
+        roundedButton: true
     }
 }
+let formSubmitted = false;
+const LoginPage = () => {
+    const [email, onEmailChange] = React.useState(email);
+    const [password, onPasswordChange] = React.useState(password);
 
-const LoginPage = () =>{
+    const [emailError, setEmailError] = React.useState(emailError);
+    const [passwordError, setPasswordError] = React.useState(passwordError);
+
+    const checkValidation = () => {
+        setEmailError(validate('email', email))
+        setPasswordError(validate('password', password))
+        formSubmitted = true;
+        if (!emailError && !passwordError) {
+            // console.log('ok report')
+        }
+    }
+    React.useEffect(() => {
+        if (email === "") {
+            onEmailChange(null)
+        }
+        if (formSubmitted) {
+            setEmailError(validate('email', email))
+        }
+    }, [email]);
+
+    React.useEffect(() => {
+        if (password === "") {
+            onPasswordChange(null)
+        }
+        if (formSubmitted) {
+            setPasswordError(validate('password', password))
+        }
+    }, [password]);
     return (
         <View style={styles.container}>
-            
-            
-            
             <View >
-            <Image style = {styles.logostyle} source = { 
-                require('./../Assets/Logo.jpeg')
-            }/>
-                
-                <Input config={config.fields.email}></Input>
-                <Input config={config.fields.password}></Input>
-               
+                <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
+                <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
+                <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
+
             </View>
-            <View style={styles.buttonsContainer}><CustomButton ></CustomButton></View>
+            <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
             <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
             <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Signin</Text></View>
         </View>
@@ -51,17 +77,14 @@ const LoginPage = () =>{
 }
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
+        width: '100%',
         display: "flex",
         alignItems: 'center',
-    },
-    header: {
-        marginBottom: 50,
-        width: "100%"
+        justifyContent: "center"
     },
     buttonsContainer: {
         alignItems: "center",
-        marginTop: 70,
+        marginTop: 160,
         width: "100%"
     },
     forgotPasswordTextContainer: {
@@ -70,16 +93,13 @@ const styles = StyleSheet.create({
     forgotPasswordText: {
         color: CSS_CONSTANTS.COLOR_PRIMARY
     },
-    logostyle : {
-        position : 'relative',
-        left : 100,
-        width : 150,
-        height : 150,
-        marginTop : 50,
-        marginBottom : 50
-
+    logostyle: {
+        width: 150,
+        height: 150,
+        marginBottom: 100,
+        alignSelf: "center"
     }
 
 })
 export default LoginPage;
-    
+
