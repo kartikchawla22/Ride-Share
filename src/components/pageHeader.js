@@ -1,14 +1,25 @@
 import React from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, Pressable, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const PageHeader = (props) => {
     const { config } = props;
+    renderLeftHandButton = () => {
+        if (config.closeButton) {
+            return <IconAntDesign style={styles.icon}
+                name='close' />
+        } else if (config.burgerButton) {
+            return <Feather style={styles.icon}
+                name='menu' />;
+        }
+        // return ''
+    }
     return (
         <View style={styles.container}>
-            <IconAntDesign style={styles.closeIcon}
-                name='close' />
+
+            {renderLeftHandButton()}
             <Text style={styles.header}>
                 {config.title}</Text>
             {!!config.rightHandButtonText ? <Text style={styles.righHandButton}>{config.rightHandButtonText}</Text> : null}
@@ -29,7 +40,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 30,
     },
-    closeIcon: {
+    icon: {
         left: 10,
         position: "absolute",
         fontSize: 20

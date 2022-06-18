@@ -3,10 +3,18 @@ import { TextInput, StyleSheet, View, Pressable, Text } from 'react-native';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const Input = (props) => {
-    const { config, hasError } = props;
+    const { config, errorMessage } = props;
+    const [type, setType] = React.useState(config.type);
+    const switchPasswordMode = () => {
+        if (type === "password") {
+            setType("text")
+        } else {
+            setType("password")
+        }
+    }
     return (
         <View style={styles.container}>
-            <View style={[styles.inputContainer, hasError ? styles.hasError : null]}>
+            <View style={[styles.inputContainer, !!errorMessage ? styles.hasError : null]}>
                 <TextInput
                     style={styles.inputField}
                     name={config.name}
@@ -15,15 +23,16 @@ const Input = (props) => {
                     autoCorrect={false}
                     textContentType={config.textContentType}
                     autoComplete={config.autoComplete}
-                    secureTextEntry={config.type === "password"}
+                    secureTextEntry={type === "password"}
                     enablesReturnKeyAutomatically
                     contextMenuHidden={config.type === "password"}
+                    onChangeText={props.onChangeText}
                 />
                 {config.type === "password" ?
-                    <Pressable style={styles.inputFieldButton}><Text style={styles.showButtonText}>Show</Text></Pressable>
+                    <Pressable onPress={switchPasswordMode} style={styles.inputFieldButton}><Text style={styles.showButtonText}>{type === 'password' ? 'Show' : 'Hide'}</Text></Pressable>
                     : null}
             </View>
-            {hasError ? <Text style={styles.errorMessage}>Error Message</Text> : null}
+            {!!errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
         </View>
     );
 }

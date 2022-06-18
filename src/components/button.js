@@ -6,17 +6,17 @@ const CustomButton = (props) => {
     const { config } = props;
     return (
         <TouchableOpacity
-            style={styles.submitButton}
-        ><Text style={styles.submitButtonText}>Submit</Text>
+            onPress={props.onPress}
+            style={[styles.button, config.roundedButton ? styles.roundedButton : null]}
+        ><Text style={styles.buttonText}>{config.buttonText}</Text>
         </TouchableOpacity>
     );
 }
 
 
 const styles = StyleSheet.create({
-    submitButton: {
+    button: {
         backgroundColor: CSS_CONSTANTS.COLOR_PRIMARY,
-        borderRadius: 100,
         borderWidth: 1,
         borderColor: '#fff',
         width: "80%",
@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10
     },
-    submitButtonText: {
+    roundedButton: {
+        borderRadius: 100,
+    },
+    buttonText: {
         color: '#fff',
         textAlign: 'center',
         alignItems: 'center',
