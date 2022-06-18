@@ -9,12 +9,11 @@ const PageHeader = (props) => {
     renderLeftHandButton = () => {
         if (config.closeButton) {
             return <IconAntDesign style={styles.icon}
-                name='close' />
+                name='close' onPress={() => props.navigation.goBack()} />
         } else if (config.burgerButton) {
             return <Feather style={styles.icon}
                 name='menu' />;
         }
-        // return ''
     }
     return (
         <View style={styles.container}>

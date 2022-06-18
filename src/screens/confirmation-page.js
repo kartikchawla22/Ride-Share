@@ -3,6 +3,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import PageHeader from '../components/pageHeader';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const config = {
     header: {
@@ -17,15 +19,17 @@ const ConfirmationPage = (props) => {
         rideConfirmed: 'Your ride has been confirmed'
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.container}>
 
-            <View style={styles.header}>
-                <PageHeader config={config.header}></PageHeader>
+                <View style={styles.header}>
+                    <PageHeader navigation={navigation} config={config.header}></PageHeader>
+                </View>
+                <IconAntDesign style={styles.checkIcon}
+                    name='check'></IconAntDesign>
+                <Text style={styles.confirmationText}>{confirmationText[props.message]}</Text>
             </View>
-            <IconAntDesign style={styles.checkIcon}
-                name='check'></IconAntDesign>
-            <Text style={styles.confirmationText}>{confirmationText[props.message]}</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
