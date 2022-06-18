@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 const config = {
     header: {
         title: "Home Page",
@@ -18,18 +20,20 @@ const config = {
 
 const HomePage = () => {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.container}>
 
-            <View style={styles.header}>
-                <PageHeader config={config.header}></PageHeader>
+                <View style={styles.header}>
+                    <PageHeader config={config.header}></PageHeader>
+                </View>
+                <View>
+                    <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
+                </View>
+                <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide}></CustomButton></View>
+                <Text style={styles.orText}>OR</Text>
+                <View style={styles.buttonsContainer}><CustomButton config={config.shareYourRide}></CustomButton></View>
             </View>
-            <View>
-                <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
-            </View>
-            <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide}></CustomButton></View>
-            <Text style={styles.orText}>OR</Text>
-            <View style={styles.buttonsContainer}><CustomButton config={config.shareYourRide}></CustomButton></View>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
     orText: {
         marginTop: 60,
         marginBottom: -50,
-        fontSize: 70,
+        fontSize: 50,
         fontWeight: "700",
         opacity: 0.5
     }

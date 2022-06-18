@@ -5,6 +5,8 @@ import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
 import validate from '../utils/validation-wrapper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const config = {
     fields: {
@@ -42,7 +44,7 @@ const config = {
 }
 let formSubmitted = false;
 
-const SignupPage = () => {
+const SignupPage = ({ navigation, route }) => {
     const [email, onEmailChange] = React.useState(email);
     const [password, onPasswordChange] = React.useState(password);
     const [name, onNameChange] = React.useState(name);
@@ -63,6 +65,10 @@ const SignupPage = () => {
             // console.log('ok report')
         }
     }
+    React.useEffect(() => {
+        formSubmitted = false;
+        console.log('here')
+    }, [route]);
 
     React.useEffect(() => {
         if (email === "") {
@@ -99,19 +105,21 @@ const SignupPage = () => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <PageHeader config={config.header}></PageHeader>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <PageHeader navigation={navigation} config={config.header}></PageHeader>
+                </View>
+                <View >
+                    <Input config={config.fields.name} onChangeText={onNameChange} errorMessage={nameError}></Input>
+                    <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
+                    <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
+                    <Input config={config.fields.confirmPassword} onChangeText={onConfirmPasswordChange} errorMessage={confirmPasswordError}></Input>
+                </View>
+                <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
+                <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
             </View>
-            <View >
-                <Input config={config.fields.name} onChangeText={onNameChange} errorMessage={nameError}></Input>
-                <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
-                <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
-                <Input config={config.fields.confirmPassword} onChangeText={onConfirmPasswordChange} errorMessage={confirmPasswordError}></Input>
-            </View>
-            <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
-            <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({

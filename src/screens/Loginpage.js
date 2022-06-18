@@ -1,26 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, Keyboard } from 'react-native';
 import Input from '../components/input';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
 import validate from '../utils/validation-wrapper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { CONSTANTS } from '../utils/contants';
+import { useIsFocused } from "@react-navigation/native"
+
 const config = {
     fields: {
         email: {
             placeholder: "Email",
             type: "text",
             textContentType: "emailAddress", //iOS
-            autoComplete: "email" //Android
+            autoComplete: "email", //Android,
+            name: "email"
         },
         password: {
             placeholder: "Password",
             type: "password",
             textContentType: "newPassword", //iOS
-        },
-        confirmPassword: {
-            placeholder: "Confirm Password",
-            type: "password",
-            textContentType: "newPassword", //iOS
+            name: "email"
         }
     },
     submitButton: {
@@ -29,21 +30,49 @@ const config = {
     }
 }
 let formSubmitted = false;
-const LoginPage = () => {
+const LoginPage = ({ navigation, route }) => {
+    const isFocused = useIsFocused();
     const [email, onEmailChange] = React.useState(email);
     const [password, onPasswordChange] = React.useState(password);
 
     const [emailError, setEmailError] = React.useState(emailError);
     const [passwordError, setPasswordError] = React.useState(passwordError);
 
+    const [wrongEmailOrPassword = false, setWrongEmailOrPassword] = React.useState(wrongEmailOrPassword);
+
     const checkValidation = () => {
         setEmailError(validate('email', email))
         setPasswordError(validate('password', password))
         formSubmitted = true;
-        if (!emailError && !passwordError) {
-            // console.log('ok report')
+        if (!email || !password) {
+            return;
         }
     }
+    const refreshPage = () => {
+        formSubmitted = false;
+        setWrongEmailOrPassword(false);
+        onEmailChange(null);
+        onPasswordChange(null);
+        setPasswordError(null);
+        setEmailError(null);
+    }
+    React.useEffect(() => {
+        if (isFocused) {
+            refreshPage();
+        }
+    }, [isFocused]);
+
+    React.useEffect(() => {
+        if (!emailError && !passwordError) {
+            if (email === CONSTANTS.EMAIL && password === CONSTANTS.PASSWORD) {
+                Keyboard.dismiss();
+                navigation.navigate('Home');
+            } else {
+                setWrongEmailOrPassword(true);
+            }
+        }
+    }, [emailError, passwordError]);
+
     React.useEffect(() => {
         if (email === "") {
             onEmailChange(null)
@@ -51,6 +80,7 @@ const LoginPage = () => {
         if (formSubmitted) {
             setEmailError(validate('email', email))
         }
+        setWrongEmailOrPassword(false);
     }, [email]);
 
     React.useEffect(() => {
@@ -60,19 +90,25 @@ const LoginPage = () => {
         if (formSubmitted) {
             setPasswordError(validate('password', password))
         }
+        setWrongEmailOrPassword(false);
     }, [password]);
     return (
-        <View style={styles.container}>
-            <View >
-                <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
-                <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
-                <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
-
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.container}>
+                <View >
+                    <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
+                    {wrongEmailOrPassword ? <Text style={styles.wrongEmailOrPasswordError} >Wrong Email/Password</Text> : null}
+                    <Input value={email} config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
+                    <Input value={password} config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
+                </View>
+                <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
+                <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
+                <View style={styles.forgotPasswordTextContainer}><Text onPress={() => {
+                    Keyboard.dismiss();
+                    navigation.navigate('SignUp')
+                }} style={styles.forgotPasswordText}>Sign up</Text></View>
             </View>
-            <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
-            <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
-            <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Signin</Text></View>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
@@ -91,12 +127,17 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     forgotPasswordText: {
-        color: CSS_CONSTANTS.COLOR_PRIMARY
+        color: CSS_CONSTANTS.COLOR_PRIMARY,
+        textDecorationLine: "underline"
     },
     logostyle: {
         width: 150,
         height: 150,
         marginBottom: 100,
+        alignSelf: "center"
+    },
+    wrongEmailOrPasswordError: {
+        color: CSS_CONSTANTS.ERROR_COLOR,
         alignSelf: "center"
     }
 
