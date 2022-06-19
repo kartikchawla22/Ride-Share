@@ -47,6 +47,14 @@ const LoginPage = ({ navigation, route }) => {
         if (!email || !password) {
             return;
         }
+        if (!emailError && !passwordError) {
+            if (email === CONSTANTS.EMAIL && password === CONSTANTS.PASSWORD) {
+                Keyboard.dismiss();
+                navigation.navigate('Home');
+            } else {
+                setWrongEmailOrPassword(true);
+            }
+        }
     }
     const refreshPage = () => {
         formSubmitted = false;
@@ -61,17 +69,6 @@ const LoginPage = ({ navigation, route }) => {
             refreshPage();
         }
     }, [isFocused]);
-
-    React.useEffect(() => {
-        if (!emailError && !passwordError) {
-            if (email === CONSTANTS.EMAIL && password === CONSTANTS.PASSWORD) {
-                Keyboard.dismiss();
-                navigation.navigate('Home');
-            } else {
-                setWrongEmailOrPassword(true);
-            }
-        }
-    }, [emailError, passwordError]);
 
     React.useEffect(() => {
         if (email === "") {
