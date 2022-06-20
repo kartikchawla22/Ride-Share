@@ -93,7 +93,7 @@ const LoginPage = ({ navigation, route }) => {
         <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={styles.container}>
                 <View >
-                    <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
+                    <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
                     {wrongEmailOrPassword ? <Text style={styles.wrongEmailOrPasswordError} >Wrong Email/Password</Text> : null}
                     <Input value={email} config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
                     <Input value={password} config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>

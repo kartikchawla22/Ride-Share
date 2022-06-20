@@ -27,7 +27,7 @@ const HomePage = () => {
                     <PageHeader config={config.header}></PageHeader>
                 </View>
                 <View>
-                    <Image style={styles.logostyle} source={require('./../Assets/Logo.jpeg')} />
+                    <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
                 </View>
                 <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide}></CustomButton></View>
                 <Text style={styles.orText}>OR</Text>
