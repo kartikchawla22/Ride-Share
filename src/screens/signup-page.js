@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     forgotPasswordText: {
-        color: CSS_CONSTANTS.COLOR_PRIMARY
+        color: CSS_CONSTANTS.COLOR_PRIMARY,
+        textDecorationLine: "underline"
     }
 })
 export default SignupPage;
