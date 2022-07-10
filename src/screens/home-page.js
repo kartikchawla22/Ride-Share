@@ -18,7 +18,7 @@ const config = {
     }
 }
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={styles.container}>
@@ -31,7 +31,7 @@ const HomePage = () => {
                 </View>
                 <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide}></CustomButton></View>
                 <Text style={styles.orText}>OR</Text>
-                <View style={styles.buttonsContainer}><CustomButton config={config.shareYourRide}></CustomButton></View>
+                <View style={styles.buttonsContainer}><CustomButton onPress={() => { navigation.navigate('ShareYourRide') }} config={config.shareYourRide}></CustomButton></View>
             </View>
         </SafeAreaView>
     );

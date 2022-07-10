@@ -23,7 +23,7 @@ const ConfirmationPage = (props) => {
             <View style={styles.container}>
 
                 <View style={styles.header}>
-                    <PageHeader navigation={navigation} config={config.header}></PageHeader>
+                    <PageHeader navigation={props.navigation} redirectURL={"Home"} config={config.header}></PageHeader>
                 </View>
                 <IconAntDesign style={styles.checkIcon}
                     name='check'></IconAntDesign>

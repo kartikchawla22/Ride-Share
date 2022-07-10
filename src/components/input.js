@@ -12,7 +12,6 @@ const Input = (props) => {
             setType("password")
         }
     }
-    console.log('inside input', config.name);
     return (
         <View style={styles.container}>
             <View style={[styles.inputContainer, !!errorMessage ? styles.hasError : null]}>
@@ -29,6 +28,7 @@ const Input = (props) => {
                     contextMenuHidden={config.type === "password"}
                     onChangeText={props.onChangeText}
                     value={props.value}
+                    keyboardType={config.keyboardType ? config.keyboardType : "default"}
                 />
                 {config.type === "password" ?
                     <Pressable onPress={switchPasswordMode} style={styles.inputFieldButton}><Text style={styles.showButtonText}>{type === 'password' ? 'Show' : 'Hide'}</Text></Pressable>
