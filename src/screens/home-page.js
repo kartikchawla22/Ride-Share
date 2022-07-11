@@ -25,7 +25,7 @@ const HomePage = ({ navigation }) => {
                 <View>
                     <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
                 </View>
-                <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide}></CustomButton></View>
+                <View style={styles.buttonsContainer}><CustomButton config={config.searchForRide} onPress={() => { navigation.navigate('SearchRide') }}></CustomButton></View>
                 <Text style={styles.orText}>OR</Text>
                 <View style={styles.buttonsContainer}><CustomButton onPress={() => { navigation.navigate('ShareYourRide') }} config={config.shareYourRide}></CustomButton></View>
             </View>

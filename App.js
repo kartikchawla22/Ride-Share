@@ -20,8 +20,9 @@ import LoginPage from './src/screens/Loginpage';
 import SignupPage from './src/screens/signup-page';
 import HomePage from './src/screens/home-page';
 import ConfirmationPage from './src/screens/confirmation-page';
-import ShareYourRidePage from './src/screens/share-your-ride-page';
+import SearchRide from './src/screens/searchride';
 import DrawerNavigationDelegate from './src/utils/drawer-navigation-delegate';
+import ShareYourRidePage from './src/screens/share-your-ride-page';
 const Stack = createStackNavigator();
 const App: () => Node = () => {
 
@@ -34,6 +35,7 @@ const App: () => Node = () => {
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Confirmation" component={ConfirmationPage} />
+          <Stack.Screen name="SearchRide" component={SearchRide} />
           <Stack.Screen name="DrawerNavigationDelegate" component={DrawerNavigationDelegate} />
           <Stack.Screen name="ShareYourRide" component={ShareYourRidePage} />
         </Stack.Navigator>
