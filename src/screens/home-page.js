@@ -20,12 +20,8 @@ const config = {
 
 const HomePage = ({ navigation }) => {
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+        <SafeAreaView>
             <View style={styles.container}>
-
-                <View style={styles.header}>
-                    <PageHeader config={config.header}></PageHeader>
-                </View>
                 <View>
                     <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
                 </View>

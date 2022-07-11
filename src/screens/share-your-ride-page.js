@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown'
 import { CONSTANTS } from '../utils/contants';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const config = {
@@ -83,7 +84,6 @@ const ShareYourRidePage = ({ navigation, route }) => {
         setNumberOfPassengersAllowedError(validate('numberOfPassengersAllowed', numberOfPassengersAllowed))
         setPricePerRiderError(validate('pricePerRider', pricePerRider))
         formSubmitted = true
-        console.log(vehicleNumberError);
         if (!vehicleNumberError
             && !leavingFromError
             && !goingToError
@@ -100,31 +100,82 @@ const ShareYourRidePage = ({ navigation, route }) => {
         formSubmitted = false;
     }, [route]);
 
+
+
     React.useEffect(() => {
-        if (vehicleNumberError === "") {
+        if (vehicleNumber === "") {
             onVehicleNumberChange(null)
         }
         if (formSubmitted) {
             setVehicleNumberError(validate('vehicleNumber', vehicleNumber))
         }
-    }, [vehicleNumberError]);
+    }, [vehicleNumber]);
+
+    React.useEffect(() => {
+        if (leavingFrom === null) {
+            onLeavingFromChange(null)
+        }
+        if (formSubmitted) {
+            setLeavingFromError(validate('leavingFrom', leavingFrom))
+        }
+    }, [leavingFrom]);
+
+
+    React.useEffect(() => {
+        if (goingTo === null) {
+            onGoingToChange(null)
+        }
+        if (formSubmitted) {
+            setGoingToError(validate('goingTo', goingTo))
+        }
+    }, [goingTo]);
+
+    React.useEffect(() => {
+        if (numberOfPassengersAllowed === "") {
+            onNumberOfPassengersAllowedChange(null)
+        }
+        if (formSubmitted) {
+            setNumberOfPassengersAllowedError(validate('numberOfPassengersAllowed', numberOfPassengersAllowed))
+        }
+    }, [numberOfPassengersAllowed]);
+
+    React.useEffect(() => {
+        if (pricePerRider === "") {
+            onPricePerRiderChange(null)
+        }
+        if (formSubmitted) {
+            setPricePerRiderError(validate('pricePerRider', pricePerRider))
+        }
+    }, [pricePerRider]);
+
+    React.useEffect(() => {
+        if (dateOfTravel === "") {
+            onPricePerRiderChange(null)
+        }
+        if (formSubmitted) {
+            setDateOfTravelError(validate('dateOfTravel', dateOfTravel))
+        }
+    }, [dateOfTravel]);
+
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <PageHeader navigation={navigation} config={config.header}></PageHeader>
-                </View>
-                <View >
-                    <Input config={config.fields.vehicleNumber} onChangeText={onVehicleNumberChange} errorMessage={vehicleNumberError}></Input>
-                    <DropdownComponent config={config.fields.leavingFrom} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onLeavingFromChange} errorMessage={leavingFromError}></DropdownComponent>
-                    <DropdownComponent config={config.fields.goingTo} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onGoingToChange} errorMessage={goingToError}></DropdownComponent>
-                    <DatePickerComponent config={config.fields.dateOfTravel} onChangeText={onDateOfTravelChange} errorMessage={dateOfTravelError}></DatePickerComponent>
-                    <Input config={config.fields.numberOfPassengersAllowed} onChangeText={onNumberOfPassengersAllowedChange} errorMessage={numberOfPassengersAllowedError}></Input>
-                    <Input config={config.fields.pricePerRider} onChangeText={onPricePerRiderChange} errorMessage={pricePerRiderError}></Input>
-                </View>
-                <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
+        <SafeAreaView>
+            <View style={styles.header}>
+                <PageHeader navigation={navigation} config={config.header}></PageHeader>
             </View>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View>
+                        <Input config={config.fields.vehicleNumber} onChangeText={onVehicleNumberChange} errorMessage={vehicleNumberError}></Input>
+                        <DropdownComponent config={config.fields.leavingFrom} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onLeavingFromChange} errorMessage={leavingFromError}></DropdownComponent>
+                        <DropdownComponent config={config.fields.goingTo} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onGoingToChange} errorMessage={goingToError}></DropdownComponent>
+                        <DatePickerComponent config={config.fields.dateOfTravel} onDateChange={onDateOfTravelChange} errorMessage={dateOfTravelError} date={dateOfTravel}></DatePickerComponent>
+                        <Input config={config.fields.numberOfPassengersAllowed} onChangeText={onNumberOfPassengersAllowedChange} errorMessage={numberOfPassengersAllowedError}></Input>
+                        <Input config={config.fields.pricePerRider} onChangeText={onPricePerRiderChange} errorMessage={pricePerRiderError}></Input>
+                    </View>
+                </View>
+            </ScrollView>
+            <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
         </SafeAreaView>
     );
 }
@@ -133,6 +184,7 @@ const styles = StyleSheet.create({
         width: '100%',
         display: "flex",
         alignItems: 'center',
+        justifyContent: "center"
     },
     header: {
         marginBottom: 30,

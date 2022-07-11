@@ -20,6 +20,8 @@ const DatePickerComponent = (props) => {
                     showIcon={false}
                     allowFontScaling={true}
                     customStyles={styles.inputField}
+                    onDateChange={props.onDateChange}
+                    date={props.date}
                 />
 
             </View>

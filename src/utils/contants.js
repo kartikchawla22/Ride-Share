@@ -31,12 +31,12 @@ export const CONSTANTS = {
             "value": "burlington"
         },
         {
-            "label": "Cambridge[note 3]",
-            "value": "cambridge[note 3]"
+            "label": "Cambridge",
+            "value": "cambridge"
         },
         {
             "label": "Clarence-Rockland",
-            "value": "clarence-rockland"
+            "value": "clarence rockland"
         },
         {
             "label": "Cornwall",
