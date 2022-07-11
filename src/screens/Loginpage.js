@@ -50,7 +50,12 @@ const LoginPage = ({ navigation, route }) => {
         if (!emailError && !passwordError) {
             if (email === CONSTANTS.EMAIL && password === CONSTANTS.PASSWORD) {
                 Keyboard.dismiss();
-                navigation.navigate('Home');
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        { name: 'DrawerNavigationDelegate' }
+                    ],
+                })
             } else {
                 setWrongEmailOrPassword(true);
             }
@@ -89,8 +94,9 @@ const LoginPage = ({ navigation, route }) => {
         }
         setWrongEmailOrPassword(false);
     }, [password]);
+
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+        <SafeAreaView>
             <View style={styles.container}>
                 <View >
                     <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
