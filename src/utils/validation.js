@@ -23,6 +23,27 @@ var constraints = {
     confirmPassword: {
         presence: true,
         equality: 'password'
+    },
+    vehicleNumber: {
+        presence: true
+    },
+    leavingFrom: {
+        presence: true
+    },
+    goingTo: {
+        presence: true
+    },
+    dateOfTravel: {
+        presence: true
+    },
+    numberOfPassengersAllowed: {
+        presence: true
+    },
+    leavinpricePerRidergFrom: {
+        presence: true
+    },
+    pricePerRider: {
+        presence: true
     }
 };
 

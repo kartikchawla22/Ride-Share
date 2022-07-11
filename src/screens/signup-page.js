@@ -67,7 +67,6 @@ const SignupPage = ({ navigation, route }) => {
     }
     React.useEffect(() => {
         formSubmitted = false;
-        console.log('here')
     }, [route]);
 
     React.useEffect(() => {

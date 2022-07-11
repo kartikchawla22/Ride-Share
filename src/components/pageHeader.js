@@ -9,7 +9,7 @@ const PageHeader = (props) => {
     renderLeftHandButton = () => {
         if (config.closeButton) {
             return <IconAntDesign style={styles.icon}
-                name='close' onPress={() => props.navigation.goBack()} />
+                name='close' onPress={() => !!props.redirectURL ? props.navigation.navigate(props.redirectURL) : props.navigation.goBack()} />
         } else if (config.burgerButton) {
             return <Feather style={styles.icon}
                 name='menu' />;
