@@ -7,6 +7,7 @@ import validate from '../utils/validation-wrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CONSTANTS } from '../utils/contants';
 import { useIsFocused } from "@react-navigation/native"
+import { ScrollView } from 'react-native-gesture-handler';
 
 const config = {
     fields: {
@@ -97,6 +98,7 @@ const LoginPage = ({ navigation, route }) => {
 
     return (
         <SafeAreaView>
+            
             <View style={styles.container}>
                 <View >
                     <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         alignItems: "center",
-        marginTop: 160,
+        marginTop: "20%",
         width: "100%"
     },
     forgotPasswordTextContainer: {
