@@ -2,6 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomePage from '../screens/home-page';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ProfilePage from '../screens/profilePage';
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigationDelegate = ({ navigation }) => {
@@ -31,9 +32,13 @@ const DrawerNavigationDelegate = ({ navigation }) => {
                     drawerLabel: "Home",
                     title: "Ride Share"
                 }} />
+                <Drawer.Screen name="Profile" component={ProfilePage} options={{
+                    drawerLabel: "Profile"
+                }} />
                 <Drawer.Screen name="Logout" component={Logout} options={{
                     drawerLabel: "Logout"
                 }} />
+                
 
             </Drawer.Navigator>
         </SafeAreaProvider>

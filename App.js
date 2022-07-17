@@ -23,6 +23,7 @@ import ConfirmationPage from './src/screens/confirmation-page';
 import SearchRide from './src/screens/searchride';
 import DrawerNavigationDelegate from './src/utils/drawer-navigation-delegate';
 import ShareYourRidePage from './src/screens/share-your-ride-page';
+import profilePage from './src/screens/profilePage';
 const Stack = createStackNavigator();
 const App: () => Node = () => {
 
@@ -30,14 +31,16 @@ const App: () => Node = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName= "Login" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />
-          <Stack.Screen name="Login" component={LoginPage} />
+          
           <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Confirmation" component={ConfirmationPage} />
           <Stack.Screen name="SearchRide" component={SearchRide} />
           <Stack.Screen name="DrawerNavigationDelegate" component={DrawerNavigationDelegate} />
           <Stack.Screen name="ShareYourRide" component={ShareYourRidePage} />
+          <Stack.Screen name="Profile" component={profilePage} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
