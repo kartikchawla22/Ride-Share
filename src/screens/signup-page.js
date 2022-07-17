@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     header: {
-        marginBottom: 120,
+        marginBottom: "10%",
         width: "100%"
     },
     buttonsContainer: {

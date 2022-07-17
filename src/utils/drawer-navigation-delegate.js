@@ -26,19 +26,23 @@ const DrawerNavigationDelegate = ({ navigation }) => {
                         backgroundColor: "transparent",
                     },
                     title: "",
-
+                    headerTitleStyle: {
+                        fontWeight: "300",
+                        fontSize: 25
+                    }
                 }} >
                 <Drawer.Screen name="Home" component={HomePage} options={{
                     drawerLabel: "Home",
                     title: "Ride Share"
                 }} />
                 <Drawer.Screen name="Profile" component={ProfilePage} options={{
-                    drawerLabel: "Profile"
+                    drawerLabel: "Profile",
+                    title: "Your Profile"
                 }} />
                 <Drawer.Screen name="Logout" component={Logout} options={{
                     drawerLabel: "Logout"
                 }} />
-                
+
 
             </Drawer.Navigator>
         </SafeAreaProvider>
