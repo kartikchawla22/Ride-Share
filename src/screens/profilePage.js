@@ -20,36 +20,29 @@ const config = {
 
 
 
-const ProfilePage = ({ navigation, route }) =>{
+const ProfilePage = ({ navigation, route }) => {
     return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <PageHeader navigation={navigation} config={config.header}></PageHeader>
-             </View>
-             <View>
-             <Image style ={styles.photoStyle} source={require('./../Assets/profile.png')}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.container}>
+                <View>
+                    <Image style={styles.photoStyle} source={require('./../Assets/profile.png')}></Image>
+                </View>
+                <View Style={styles.touchableOpacityStyle} >
 
-             </Image>
-             </View>
-             <View Style = {styles.touchableOpacityStyle} >
+                    <TouchableOpacity style={{ marginBottom: 20 }}
 
-             <TouchableOpacity style ={{marginBottom : 20}}
-             
-             onPress={()=>{alert('Hello')}}>
-                  <Text style = {styles.textStyle}>Edit Profile</Text>
-             </TouchableOpacity>
-             <TouchableOpacity onPress={()=>{alert('Hello')}}>
-                  <Text style = {styles.textStyle}>Add Documents</Text>
-             </TouchableOpacity>
-             </View>
-         </View>
+                        onPress={() => { alert('Edit profile') }}>
+                        <Text style={styles.textStyle}>Edit Profile</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { alert('Add doccuments') }}>
+                        <Text style={styles.textStyle}>Add Documents</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </SafeAreaView>
 
-
-        
-    </SafeAreaView>
-
-)} 
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -60,25 +53,25 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 120,
         width: "100%",
-        marginTop : -50
+        marginTop: -50
     },
     textStyle: {
         fontSize: 30,
 
     },
-    touchableOpacityStyle:{
-        width : "40%",
-        height : "20%",
-        alignSelf : 'flex-start',
-        
+    touchableOpacityStyle: {
+        width: "40%",
+        height: "20%",
+        alignSelf: 'flex-start',
+
     },
-    photoStyle :{
+    photoStyle: {
         width: 150,
         height: 150,
         marginBottom: 100,
         //borderRadius : "50%",
-        overflow : "hidden",
-        borderWidth : 3
+        overflow: "hidden",
+        borderWidth: 3
     }
 })
 export default ProfilePage;
