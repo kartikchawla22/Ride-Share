@@ -23,6 +23,7 @@ import ShareYourRidePage from './src/screens/share-your-ride-page';
 import profilePage from './src/screens/profilePage';
 import RideList from './src/screens/RideList';
 import SearchList from './src/screens/SearchList';
+import SplashScreen from './src/screens/SplashScreen';
 
 const Stack = createStackNavigator();
 const App: () => Node = () => {
@@ -30,11 +31,11 @@ const App: () => Node = () => {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="Splash"
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />
-
+          <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Confirmation" component={ConfirmationPage} />
           <Stack.Screen name="SearchRide" component={SearchRide} />

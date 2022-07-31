@@ -45,6 +45,17 @@ const config = {
 let formSubmitted = false;
 
 const SignupPage = ({ navigation, route }) => {
+    const signupApi = async () => {
+        try {
+            const response = await fetch(
+                `https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`
+            );
+            const result = await response.json();
+            return result
+        } catch (error) {
+            return error
+        }
+    }
     const [email, onEmailChange] = React.useState(email);
     const [password, onPasswordChange] = React.useState(password);
     const [name, onNameChange] = React.useState(name);
@@ -54,6 +65,7 @@ const SignupPage = ({ navigation, route }) => {
     const [passwordError, setPasswordError] = React.useState(passwordError);
     const [nameError, setNameError] = React.useState(nameError);
     const [confirmPasswordError, setConfirmPasswordError] = React.useState(confirmPasswordError);
+    const [apiErrorMessage = "", setApiErrorMessage] = React.useState(apiErrorMessage);
 
     const checkValidation = () => {
         setEmailError(validate('email', email))
@@ -61,10 +73,25 @@ const SignupPage = ({ navigation, route }) => {
         setNameError(validate('name', name))
         setConfirmPasswordError(validate(['confirmPassword', 'password'], [confirmPassword, password]))
         formSubmitted = true;
+        if (!email || !password || !confirmPassword || !name) {
+            return;
+        }
         if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
-            // console.log('ok report')
+            signupApi().then((res) => {
+                console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`);
+                if (res.status === "Error") {
+                    setApiErrorMessage(res.data.message);
+                } else {
+                    navigation.reset({
+                        routes: [
+                            { name: 'Login', params: res.data[0] }
+                        ],
+                    })
+                }
+            }).catch(alert);
         }
     }
+
     React.useEffect(() => {
         formSubmitted = false;
     }, [route]);
@@ -110,6 +137,7 @@ const SignupPage = ({ navigation, route }) => {
                     <PageHeader navigation={navigation} config={config.header}></PageHeader>
                 </View>
                 <View >
+                    {apiErrorMessage === "" ? null : <Text style={styles.apiErrorMessage}>{apiErrorMessage}</Text>}
                     <Input config={config.fields.name} onChangeText={onNameChange} errorMessage={nameError}></Input>
                     <Input config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
                     <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
@@ -142,6 +170,10 @@ const styles = StyleSheet.create({
     forgotPasswordText: {
         color: CSS_CONSTANTS.COLOR_PRIMARY,
         textDecorationLine: "underline"
+    },
+    apiErrorMessage: {
+        color: CSS_CONSTANTS.ERROR_COLOR,
+        alignSelf: "center"
     }
 })
 export default SignupPage;

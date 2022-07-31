@@ -32,6 +32,17 @@ const config = {
 }
 let formSubmitted = false;
 const LoginPage = ({ navigation, route }) => {
+    const loginApi = async () => {
+        try {
+            const response = await fetch(
+                `https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`
+            );
+            const result = await response.json();
+            return result
+        } catch (error) {
+            return error
+        }
+    }
     const isFocused = useIsFocused();
     const [email, onEmailChange] = React.useState(email);
     const [password, onPasswordChange] = React.useState(password);
@@ -40,6 +51,7 @@ const LoginPage = ({ navigation, route }) => {
     const [passwordError, setPasswordError] = React.useState(passwordError);
 
     const [wrongEmailOrPassword = false, setWrongEmailOrPassword] = React.useState(wrongEmailOrPassword);
+    const [apiErrorMessage = "", setApiErrorMessage] = React.useState(apiErrorMessage);
 
     const checkValidation = () => {
         setEmailError(validate('email', email))
@@ -49,17 +61,22 @@ const LoginPage = ({ navigation, route }) => {
             return;
         }
         if (!emailError && !passwordError) {
-            if (email === CONSTANTS.EMAIL && password === CONSTANTS.PASSWORD) {
-                Keyboard.dismiss();
-                navigation.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'DrawerNavigationDelegate' }
-                    ],
-                })
-            } else {
-                setWrongEmailOrPassword(true);
-            }
+            loginApi().then((res) => {
+
+                if (res.status === "Error") {
+                    setApiErrorMessage(res.data.message);
+                    setWrongEmailOrPassword(true);
+                } else {
+                    console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`);
+                    console.log(res);
+                    Keyboard.dismiss();
+                    navigation.reset({
+                        routes: [
+                            { name: 'DrawerNavigationDelegate', params: res.data[0] }
+                        ],
+                    })
+                }
+            }).catch(alert);
         }
     }
     const refreshPage = () => {
@@ -98,11 +115,11 @@ const LoginPage = ({ navigation, route }) => {
 
     return (
         <SafeAreaView>
-            
+
             <View style={styles.container}>
                 <View >
                     <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
-                    {wrongEmailOrPassword ? <Text style={styles.wrongEmailOrPasswordError} >Wrong Email/Password</Text> : null}
+                    {wrongEmailOrPassword ? <Text style={styles.wrongEmailOrPasswordError} >{apiErrorMessage}</Text> : null}
                     <Input value={email} config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
                     <Input value={password} config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
                 </View>
@@ -110,7 +127,7 @@ const LoginPage = ({ navigation, route }) => {
                 <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
                 <View style={styles.forgotPasswordTextContainer}><Text onPress={() => {
                     Keyboard.dismiss();
-                    navigation.navigate('SignUp')
+                    navigation.navigate('SignUp', { ...route.params })
                 }} style={styles.forgotPasswordText}>Sign up</Text></View>
             </View>
         </SafeAreaView>
