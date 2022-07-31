@@ -1,20 +1,22 @@
 import React from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomePage from '../screens/home-page';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ProfilePage from '../screens/profilePage';
 import RideList from '../screens/RideList';
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigationDelegate = ({navigation}) => {
+const DrawerNavigationDelegate = ({ navigation, route }) => {
   const Logout = () => {
     React.useEffect(() => {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Login'}],
+        routes: [{ name: 'Login' }],
       });
     }, []);
   };
+  const { params } = route;
+  console.log(params, "inside delegete");
   return (
     <SafeAreaProvider>
       <Drawer.Navigator
@@ -38,6 +40,7 @@ const DrawerNavigationDelegate = ({navigation}) => {
             drawerLabel: 'Home',
             title: 'Ride Share',
           }}
+          initialParams={params}
         />
         <Drawer.Screen
           name="Profile"
@@ -46,6 +49,7 @@ const DrawerNavigationDelegate = ({navigation}) => {
             drawerLabel: 'Profile',
             title: 'Your Profile',
           }}
+          initialParams={params}
         />
         <Drawer.Screen
           name="YourRides"
@@ -54,6 +58,7 @@ const DrawerNavigationDelegate = ({navigation}) => {
             drawerLabel: 'Your Rides',
             title: 'Your Rides',
           }}
+          initialParams={params}
         />
         <Drawer.Screen
           name="Logout"
