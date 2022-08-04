@@ -31,7 +31,6 @@ const SplashScreen = ({ navigation }) => {
         <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={styles.container}>
 
-                <Text>Splash screen</Text>
             </View>
         </SafeAreaView>
     );

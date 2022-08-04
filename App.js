@@ -11,8 +11,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { StatusBar, useColorScheme } from 'react-native';
-
 import LoginPage from './src/screens/Loginpage';
 import SignupPage from './src/screens/signup-page';
 import HomePage from './src/screens/home-page';
