@@ -60,6 +60,7 @@ const SearchRide = ({navigation, route}) => {
     setGoingToError(validate('goingTo', goingTo));
     setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     formSubmitted = true;
+
     if (!leavingFromError && !goingToError && !dateOfTravelError) {
       navigation.navigate('SearchList');
     }
@@ -97,7 +98,7 @@ const SearchRide = ({navigation, route}) => {
   }, [dateOfTravel]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <PageHeader navigation={navigation} config={config.header}></PageHeader>
       </View>
@@ -131,9 +132,14 @@ const SearchRide = ({navigation, route}) => {
   );
 };
 const styles = StyleSheet.create({
+  main: {
+    display: 'flex',
+    height: '100%',
+  },
   container: {
     width: '100%',
     display: 'flex',
+    height: '80%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -142,6 +148,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonsContainer: {
+    display: 'flex',
+    height: '10%',
     alignItems: 'center',
     marginTop: 300,
     width: '100%',
