@@ -73,8 +73,6 @@ const LoginPage = ({ navigation, route }) => {
             setApiErrorMessage(res.data.message);
             setWrongEmailOrPassword(true);
           } else {
-            console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`);
-            console.log(res);
             Keyboard.dismiss();
             navigation.reset({
               routes: [

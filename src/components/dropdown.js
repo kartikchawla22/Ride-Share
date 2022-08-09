@@ -10,6 +10,7 @@ const DropdownComponent = (props) => {
         <View style={styles.container}>
             <View style={[styles.inputContainer, !!errorMessage ? styles.hasError : null]}>
                 <RNPickerSelect
+                    value={props.value}
                     placeholder={config.placeholder}
                     onValueChange={props.onValueChange}
                     style={styles.inputField}

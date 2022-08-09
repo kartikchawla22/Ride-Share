@@ -16,7 +16,6 @@ const DrawerNavigationDelegate = ({ navigation, route }) => {
     }, []);
   };
   const { params } = route;
-  console.log(params, "inside delegete");
   return (
     <SafeAreaProvider>
       <Drawer.Navigator

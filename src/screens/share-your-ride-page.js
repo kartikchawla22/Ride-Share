@@ -186,12 +186,14 @@ const ShareYourRidePage = ({ navigation, route }) => {
                             errorMessage={vehicleNumberError}></Input>
                         <DropdownComponent
                             config={config.fields.leavingFrom}
-                            options={CONSTANTS.ONTARIO_CITIES}
+                            value={leavingFrom}
+                            options={CONSTANTS.ONTARIO_CITIES.filter((c => c.value !== goingTo))}
                             onValueChange={onLeavingFromChange}
                             errorMessage={leavingFromError}></DropdownComponent>
                         <DropdownComponent
                             config={config.fields.goingTo}
-                            options={CONSTANTS.ONTARIO_CITIES}
+                            value={goingTo}
+                            options={CONSTANTS.ONTARIO_CITIES.filter((c => c.value !== leavingFrom))}
                             onValueChange={onGoingToChange}
                             errorMessage={goingToError}></DropdownComponent>
                         <DatePickerComponent

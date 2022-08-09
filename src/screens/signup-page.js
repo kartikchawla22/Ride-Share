@@ -82,7 +82,6 @@ const SignupPage = ({ navigation, route }) => {
                 setIsLoading(true);
                 signupApi().then((res) => {
                     setIsLoading(false);
-                    console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`);
                     if (res.status === "Error") {
                         setApiErrorMessage(res.data.message);
                     } else {
