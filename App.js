@@ -30,7 +30,7 @@ const App: () => Node = () => {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SearchRide"
+          initialRouteName="Splash"
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />

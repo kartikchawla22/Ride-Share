@@ -133,7 +133,7 @@ const LoginPage = ({ navigation, route }) => {
           <ActivityIndicator size="large" color={CSS_CONSTANTS.COLOR_PRIMARY} />
         </View> : null}
         <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
-        <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
+        {/* <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View> */}
         <View style={styles.forgotPasswordTextContainer}><Text onPress={() => {
           Keyboard.dismiss();
           navigation.navigate('SignUp', { ...route.params })
