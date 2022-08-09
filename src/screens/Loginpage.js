@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, Keyboard } from 'react-native';
+import { View, StyleSheet, Text, Image, Keyboard, ActivityIndicator } from 'react-native';
 import Input from '../components/input';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
@@ -53,32 +53,40 @@ const LoginPage = ({ navigation, route }) => {
   const [wrongEmailOrPassword = false, setWrongEmailOrPassword] = React.useState(wrongEmailOrPassword);
   const [apiErrorMessage = "", setApiErrorMessage] = React.useState(apiErrorMessage);
 
+  const [isLoading = false, setIsLoading] = React.useState(isLoading);
+
   const checkValidation = () => {
+
     setEmailError(validate('email', email))
     setPasswordError(validate('password', password))
     formSubmitted = true;
     if (!email || !password) {
       return;
     }
-    if (!emailError && !passwordError) {
-      loginApi().then((res) => {
+    setTimeout(() => {
+      if (!emailError && !passwordError && formSubmitted) {
+        setIsLoading(true);
+        loginApi().then((res) => {
+          setIsLoading(false);
 
-        if (res.status === "Error") {
-          setApiErrorMessage(res.data.message);
-          setWrongEmailOrPassword(true);
-        } else {
-          console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`);
-          console.log(res);
-          Keyboard.dismiss();
-          navigation.reset({
-            routes: [
-              { name: 'DrawerNavigationDelegate', params: res.data[0] }
-            ],
-          })
-        }
-      }).catch(alert);
-    }
+          if (res.status === "Error") {
+            setApiErrorMessage(res.data.message);
+            setWrongEmailOrPassword(true);
+          } else {
+            console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`);
+            console.log(res);
+            Keyboard.dismiss();
+            navigation.reset({
+              routes: [
+                { name: 'DrawerNavigationDelegate', params: res.data[0] }
+              ],
+            })
+          }
+        }).catch(alert);
+      }
+    }, 0);
   }
+
   const refreshPage = () => {
     formSubmitted = false;
     setWrongEmailOrPassword(false);
@@ -114,15 +122,18 @@ const LoginPage = ({ navigation, route }) => {
   }, [password]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView pointerEvents={isLoading ? "none" : "auto"}>
 
       <View style={styles.container}>
-        <View >
+        <View>
           <Image style={styles.logostyle} source={require('./../Assets/Logo.png')} />
           {wrongEmailOrPassword ? <Text style={styles.wrongEmailOrPasswordError} >{apiErrorMessage}</Text> : null}
           <Input value={email} config={config.fields.email} onChangeText={onEmailChange} errorMessage={emailError}></Input>
           <Input value={password} config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
         </View>
+        {isLoading ? <View style={styles.loader} >
+          <ActivityIndicator size="large" color={CSS_CONSTANTS.COLOR_PRIMARY} />
+        </View> : null}
         <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
         <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
         <View style={styles.forgotPasswordTextContainer}><Text onPress={() => {
@@ -161,6 +172,11 @@ const styles = StyleSheet.create({
   wrongEmailOrPasswordError: {
     color: CSS_CONSTANTS.ERROR_COLOR,
     alignSelf: "center"
+  },
+  loader: {
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 
 })
