@@ -112,6 +112,8 @@ const ShareYourRidePage = ({ navigation, route }) => {
     }, [vehicleNumber]);
 
     React.useEffect(() => {
+        console.log(leavingFrom)
+        console.log(CONSTANTS.ONTARIO_CITIES.filter((c) => c.value !== goingTo))
         if (leavingFrom === null) {
             onLeavingFromChange(null)
         }
@@ -167,8 +169,8 @@ const ShareYourRidePage = ({ navigation, route }) => {
                 <View style={styles.container}>
                     <View>
                         <Input config={config.fields.vehicleNumber} onChangeText={onVehicleNumberChange} errorMessage={vehicleNumberError}></Input>
-                        <DropdownComponent config={config.fields.leavingFrom} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onLeavingFromChange} errorMessage={leavingFromError}></DropdownComponent>
-                        <DropdownComponent config={config.fields.goingTo} options={CONSTANTS.ONTARIO_CITIES} onValueChange={onGoingToChange} errorMessage={goingToError}></DropdownComponent>
+                        <DropdownComponent config={config.fields.leavingFrom} options={CONSTANTS.ONTARIO_CITIES.filter((c) => c.value !== goingTo)} onValueChange={onLeavingFromChange} errorMessage={leavingFromError}></DropdownComponent>
+                        <DropdownComponent config={config.fields.goingTo} options={CONSTANTS.ONTARIO_CITIES.filter((c) => c.value !== leavingFrom)} onValueChange={onGoingToChange} errorMessage={goingToError}></DropdownComponent>
                         <DatePickerComponent config={config.fields.dateOfTravel} onDateChange={onDateOfTravelChange} errorMessage={dateOfTravelError} date={dateOfTravel}></DatePickerComponent>
                         <Input config={config.fields.numberOfPassengersAllowed} onChangeText={onNumberOfPassengersAllowedChange} errorMessage={numberOfPassengersAllowedError}></Input>
                         <Input config={config.fields.pricePerRider} onChangeText={onPricePerRiderChange} errorMessage={pricePerRiderError}></Input>

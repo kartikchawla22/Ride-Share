@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
@@ -66,6 +66,7 @@ const SignupPage = ({ navigation, route }) => {
     const [nameError, setNameError] = React.useState(nameError);
     const [confirmPasswordError, setConfirmPasswordError] = React.useState(confirmPasswordError);
     const [apiErrorMessage = "", setApiErrorMessage] = React.useState(apiErrorMessage);
+    const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
     const checkValidation = () => {
         setEmailError(validate('email', email))
@@ -76,21 +77,29 @@ const SignupPage = ({ navigation, route }) => {
         if (!email || !password || !confirmPassword || !name) {
             return;
         }
-        if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
-            signupApi().then((res) => {
-                console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`);
-                if (res.status === "Error") {
-                    setApiErrorMessage(res.data.message);
-                } else {
-                    navigation.reset({
-                        routes: [
-                            { name: 'Login', params: res.data[0] }
-                        ],
-                    })
-                }
-            }).catch(alert);
-        }
+        setTimeout(() => {
+            if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
+                setIsLoading(true);
+                signupApi().then((res) => {
+                    setIsLoading(false);
+                    console.log(`https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`);
+                    if (res.status === "Error") {
+                        setApiErrorMessage(res.data.message);
+                    } else {
+                        navigation.reset({
+                            routes: [
+                                { name: 'Login', params: res.data[0] }
+                            ],
+                        })
+                    }
+                }).catch(alert);
+            }
+        }, 0);
     }
+    React.useEffect(() => {
+
+
+    }, [emailError, passwordError, nameError, confirmPasswordError, apiErrorMessage])
 
     React.useEffect(() => {
         formSubmitted = false;
@@ -131,7 +140,7 @@ const SignupPage = ({ navigation, route }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }} pointerEvents={isLoading ? "none" : "auto"}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <PageHeader navigation={navigation} config={config.header}></PageHeader>
@@ -143,6 +152,9 @@ const SignupPage = ({ navigation, route }) => {
                     <Input config={config.fields.password} onChangeText={onPasswordChange} errorMessage={passwordError}></Input>
                     <Input config={config.fields.confirmPassword} onChangeText={onConfirmPasswordChange} errorMessage={confirmPasswordError}></Input>
                 </View>
+                {isLoading ? <View style={styles.loader} >
+                    <ActivityIndicator size="large" color={CSS_CONSTANTS.COLOR_PRIMARY} />
+                </View> : null}
                 <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
                 <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View>
             </View>
@@ -174,6 +186,11 @@ const styles = StyleSheet.create({
     apiErrorMessage: {
         color: CSS_CONSTANTS.ERROR_COLOR,
         alignSelf: "center"
+    },
+    loader: {
+        ...StyleSheet.absoluteFill,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
 export default SignupPage;
