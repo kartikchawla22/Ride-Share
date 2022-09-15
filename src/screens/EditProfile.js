@@ -11,7 +11,7 @@ import {
 import PageHeader from '../components/pageHeader';
 import Input from '../components/input';
 import CustomButton from '../components/button';
-import validate from '../utils/validation-wrapper';
+import {validate} from '../utils/validation-wrapper';
 import {useIsFocused} from '@react-navigation/native';
 const config = {
   fields: {
@@ -51,11 +51,11 @@ const EditProfile = ({navigation, route}) => {
     setNameError(validate('name', name));
 
     formSubmitted = true;
+    if (!email || !name) {
+      return;
+    }
     if (!emailError && !nameError) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Profile'}],
-      });
+      navigation.goBack('Profile');
     }
   };
   React.useEffect(() => {

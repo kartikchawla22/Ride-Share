@@ -4,7 +4,7 @@ import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button';
 import {CSS_CONSTANTS} from '../utils/css-contants';
-import validate from '../utils/validation-wrapper';
+import {validate} from '../utils/validation-wrapper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
