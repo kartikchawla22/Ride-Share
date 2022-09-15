@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import {View, StyleSheet, Keyboard} from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button';
-import { CSS_CONSTANTS } from '../utils/css-contants';
-import validate from '../utils/validation-wrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {CSS_CONSTANTS} from '../utils/css-contants';
+import {validate} from '../utils/validation-wrapper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
-import { CONSTANTS } from '../utils/contants';
-import { ScrollView } from 'react-native-gesture-handler';
+import {CONSTANTS} from '../utils/contants';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const config = {
   fields: {
@@ -43,7 +43,7 @@ const config = {
 };
 let formSubmitted = false;
 
-const SearchRide = ({ navigation, route }) => {
+const SearchRide = ({navigation, route}) => {
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
   const [dateOfTravel, onDateOfTravelChange] = React.useState(dateOfTravel);
@@ -61,9 +61,16 @@ const SearchRide = ({ navigation, route }) => {
     setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     formSubmitted = true;
 
-    if (!leavingFromError && !goingToError && !dateOfTravelError) {
-      navigation.navigate('SearchList');
+    if (!leavingFrom || !goingTo || !dateOfTravel) {
+      return;
     }
+
+    setTimeout(() => {
+      console.log(leavingFromError, goingToError, dateOfTravelError);
+      if (!leavingFromError && !goingToError && !dateOfTravelError) {
+        navigation.navigate('SearchList');
+      }
+    }, 0);
   };
 
   React.useEffect(() => {
@@ -90,7 +97,7 @@ const SearchRide = ({ navigation, route }) => {
 
   React.useEffect(() => {
     if (dateOfTravel === '') {
-      onPricePerRiderChange(null);
+      onDateOfTravelChange(null);
     }
     if (formSubmitted) {
       setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
@@ -108,13 +115,17 @@ const SearchRide = ({ navigation, route }) => {
             <DropdownComponent
               config={config.fields.leavingFrom}
               value={leavingFrom}
-              options={CONSTANTS.ONTARIO_CITIES.filter((c => c.value !== goingTo))}
+              options={CONSTANTS.ONTARIO_CITIES.filter(
+                c => c.value !== goingTo,
+              )}
               onValueChange={onLeavingFromChange}
               errorMessage={leavingFromError}></DropdownComponent>
             <DropdownComponent
               config={config.fields.goingTo}
               value={goingTo}
-              options={CONSTANTS.ONTARIO_CITIES.filter((c => c.value !== leavingFrom))}
+              options={CONSTANTS.ONTARIO_CITIES.filter(
+                c => c.value !== leavingFrom,
+              )}
               onValueChange={onGoingToChange}
               errorMessage={goingToError}></DropdownComponent>
             <DatePickerComponent
