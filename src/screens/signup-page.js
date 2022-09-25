@@ -2,10 +2,13 @@ import React from 'react';
 import {View, StyleSheet, Text, ActivityIndicator} from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
-import CustomButton from '../components/button';
-import {CSS_CONSTANTS} from '../utils/css-contants';
+import CustomButton from '../components/button'
+import { CSS_CONSTANTS } from '../utils/css-contants';
 import {validate, validateConfirmPassword} from '../utils/validation-wrapper';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { CONSTANTS } from '../utils/contants';
 
 const config = {
   fields: {
@@ -43,23 +46,11 @@ const config = {
 };
 let formSubmitted = false;
 
-const SignupPage = ({navigation, route}) => {
-  const signupApi = async () => {
-    try {
-      const response = await fetch(
-        `https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?signup=signup&email=${email}&password=${password}&name=${name}`,
-      );
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      return error;
-    }
-  };
-  const [email, onEmailChange] = React.useState(email);
-  const [password, onPasswordChange] = React.useState(password);
-  const [name, onNameChange] = React.useState(name);
-  const [confirmPassword, onConfirmPasswordChange] =
-    React.useState(confirmPassword);
+const SignupPage = ({ navigation, route }) => {
+    const [email, onEmailChange] = React.useState(email);
+    const [password, onPasswordChange] = React.useState(password);
+    const [name, onNameChange] = React.useState(name);
+    const [confirmPassword, onConfirmPasswordChange] = React.useState(confirmPassword);
 
   const [emailError, setEmailError] = React.useState(emailError);
   const [passwordError, setPasswordError] = React.useState(passwordError);
@@ -70,10 +61,10 @@ const SignupPage = ({navigation, route}) => {
     React.useState(apiErrorMessage);
   const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
-  const checkValidation = () => {
-    setEmailError(validate('email', email));
-    setPasswordError(validate('password', password));
-    setNameError(validate('name', name));
+    const checkValidation = () => {
+        setEmailError(validate('email', email))
+        setPasswordError(validate('password', password))
+        setNameError(validate('name', name))
     setConfirmPasswordError(
       validateConfirmPassword(
         ['confirmPassword', 'password'],
@@ -84,36 +75,38 @@ const SignupPage = ({navigation, route}) => {
     if (!email || !password || !confirmPassword || !name) {
       return;
     }
-    setTimeout(() => {
-      if (
-        !emailError &&
-        !passwordError &&
-        !nameError &&
-        !confirmPasswordError
-      ) {
-        setIsLoading(true);
-        signupApi()
-          .then(res => {
-            setIsLoading(false);
-            if (res.status === 'Error') {
-              setApiErrorMessage(res.data.message);
-            } else {
-              navigation.reset({
-                routes: [{name: 'Login', params: res.data[0]}],
-              });
+        setTimeout(() => {
+            if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
+                setIsLoading(true);
+                auth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .then((user) => {
+                        firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.user.uid).set({
+                            userName: name,
+                            profilePicURL: ""
+                        }).then((res) => {
+                            console.log(res);
+                            setIsLoading(false);
+                            navigation.reset({
+                                routes: [
+                                    { name: 'Login' }
+                                ],
+                            })
+                        })
+                    })
+                    .catch(error => {
+                        setIsLoading(false);
+                        if (error.code === 'auth/email-already-in-use') {
+                            setApiErrorMessage('That email address is already in use!');
+                        }
+
+                        if (error.code === 'auth/invalid-email') {
+                            setApiErrorMessage('That email address is invalid!');
+                        }
+                    })
             }
-          })
-          .catch(alert);
-      }
-    }, 0);
-  };
-  React.useEffect(() => {}, [
-    emailError,
-    passwordError,
-    nameError,
-    confirmPasswordError,
-    apiErrorMessage,
-  ]);
+        }, 0);
+    }
 
   React.useEffect(() => {
     formSubmitted = false;

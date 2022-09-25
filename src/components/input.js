@@ -12,6 +12,8 @@ const Input = (props) => {
             setType("password")
         }
     }
+    console.log(config.editable);
+
     return (
         <View style={styles.container}>
             <View style={[styles.inputContainer, !!errorMessage ? styles.hasError : null]}>
@@ -29,6 +31,7 @@ const Input = (props) => {
                     onChangeText={props.onChangeText}
                     value={props.value}
                     keyboardType={config.keyboardType ? config.keyboardType : "default"}
+                    editable={config.editable !== undefined ? config.editable : true}
                 />
                 {config.type === "password" ?
                     <Pressable onPress={switchPasswordMode} style={styles.inputFieldButton}><Text style={styles.showButtonText}>{type === 'password' ? 'Show' : 'Hide'}</Text></Pressable>
