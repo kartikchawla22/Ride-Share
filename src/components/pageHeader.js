@@ -4,7 +4,7 @@ import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 
-const PageHeader = (props, { navigation, route }) => {
+const PageHeader = (props) => {
   const { config } = props;
   renderLeftHandButton = () => {
     if (config.closeButton) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchCard from '../components/SearchCard';
 import PageHeader from '../components/pageHeader';
 
@@ -18,7 +18,7 @@ const config = {
   },
 };
 
-const SearchList = ({navigation}) => {
+const SearchList = ({ navigation }) => {
   return (
     <SafeAreaView>
       <PageHeader navigation={navigation} config={config.header}></PageHeader>

@@ -10,11 +10,10 @@ import {
 import Input from '../components/input';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
-import {validate} from '../utils/validation-wrapper';
+import { validate } from '../utils/validation-wrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CONSTANTS } from '../utils/contants';
 import { useIsFocused } from "@react-navigation/native"
-import { ScrollView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 

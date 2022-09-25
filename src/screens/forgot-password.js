@@ -1,14 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, Keyboard, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import Input from '../components/input';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
 import validate from '../utils/validation-wrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CONSTANTS } from '../utils/contants';
 import { useIsFocused } from "@react-navigation/native"
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import PageHeader from '../components/pageHeader';
 
 const config = {

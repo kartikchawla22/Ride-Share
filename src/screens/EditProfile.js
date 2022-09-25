@@ -3,19 +3,17 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableOpacity,
   Text,
   SafeAreaView,
-  Keyboard,
 } from 'react-native';
 import PageHeader from '../components/pageHeader';
 import Input from '../components/input';
 import CustomButton from '../components/button';
-import {validate} from '../utils/validation-wrapper';
-import { useIsFocused } from '@react-navigation/native';
+import { validate } from '../utils/validation-wrapper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { CONSTANTS } from '../utils/contants';
+
 const config = {
   fields: {
     name: {

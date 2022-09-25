@@ -1,15 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
-import Input from '../components/input';
-import PageHeader from '../components/pageHeader';
-import CustomButton from '../components/button';
-import {CSS_CONSTANTS} from '../utils/css-contants';
-import {validate} from '../utils/validation-wrapper';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DatePickerComponent from '../components/date-picker';
-import DropdownComponent from '../components/dropdown';
-import {CONSTANTS} from '../utils/contants';
-import {ScrollView} from 'react-native-gesture-handler';
+import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const config = {
   header: {
@@ -18,10 +9,10 @@ const config = {
   },
 };
 
-const ProfilePage = ({navigation, route}) => {
+const ProfilePage = ({ navigation }) => {
   return (
     <SafeAreaView
-      style={{flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+      style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={styles.container}>
         <View>
           <Image
@@ -30,7 +21,7 @@ const ProfilePage = ({navigation, route}) => {
         </View>
         <View Style={styles.touchableOpacityStyle}>
           <TouchableOpacity
-            style={{marginBottom: 20}}
+            style={{ marginBottom: 20 }}
             onPress={() => {
               navigation.navigate('EditProfile');
             }}>
