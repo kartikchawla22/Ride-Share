@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import auth from '@react-native-firebase/auth';
 
 const config = {
     header: {
@@ -19,6 +19,7 @@ const config = {
 }
 
 const HomePage = ({ navigation }) => {
+    console.log("home", auth().currentUser.email);
     return (
         <SafeAreaView>
             <View style={styles.container}>

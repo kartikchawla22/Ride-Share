@@ -1,16 +1,14 @@
 import React from 'react';
 import {
-  TouchableOpacity,
   Text,
   StyleSheet,
   Image,
   View,
   SafeAreaView,
 } from 'react-native';
-import {CSS_CONSTANTS} from '../utils/css-contants';
 
 const SearchCard = props => {
-  const {config} = props;
+  const { config } = props;
   return (
     <SafeAreaView style={styles.SearchCard}>
       <Image style={styles.userprofile} source={config.source}></Image>

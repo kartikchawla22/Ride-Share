@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import {CSS_CONSTANTS} from '../utils/css-contants';
+import { CSS_CONSTANTS } from '../utils/css-contants';
 
-const PageHeader = (props, {navigation, route}) => {
-  const {config} = props;
+const PageHeader = (props) => {
+  const { config } = props;
   renderLeftHandButton = () => {
     if (config.closeButton) {
       return (

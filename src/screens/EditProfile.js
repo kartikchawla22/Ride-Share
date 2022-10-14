@@ -3,16 +3,17 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableOpacity,
   Text,
   SafeAreaView,
-  Keyboard,
 } from 'react-native';
 import PageHeader from '../components/pageHeader';
 import Input from '../components/input';
 import CustomButton from '../components/button';
-import {validate} from '../utils/validation-wrapper';
-import {useIsFocused} from '@react-navigation/native';
+import { validate } from '../utils/validation-wrapper';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { CONSTANTS } from '../utils/contants';
+
 const config = {
   fields: {
     name: {
@@ -26,6 +27,7 @@ const config = {
       type: 'text',
       textContentType: 'emailAddress', //iOS
       autoComplete: 'email', //Android
+      editable: false
     },
   },
   header: {
@@ -38,14 +40,15 @@ const config = {
   },
 };
 
-const EditProfile = ({navigation, route}) => {
-  const [email, onEmailChange] = React.useState(email);
+const EditProfile = ({ navigation, route }) => {
+  const [email, onEmailChange] = React.useState(auth().currentUser.email);
   const [name, onNameChange] = React.useState(name);
 
   const [emailError, setEmailError] = React.useState(emailError);
   const [nameError, setNameError] = React.useState(nameError);
 
-  const checkValidation = () => {
+
+  const checkValidation = async () => {
     setEmailError(validate('email', email));
 
     setNameError(validate('name', name));
@@ -55,9 +58,18 @@ const EditProfile = ({navigation, route}) => {
       return;
     }
     if (!emailError && !nameError) {
-      navigation.goBack('Profile');
+      await firestore().collection(CONSTANTS.USER_COLLECTION).doc(auth().currentUser.uid).update({
+        userName: name
+      })
+      navigation.goBack();
     }
   };
+
+  React.useEffect(() => {
+    firestore().collection(CONSTANTS.USER_COLLECTION).doc(auth().currentUser.uid).get().then(result => {
+      onNameChange(result.data().userName)
+    })
+  }, [])
   React.useEffect(() => {
     formSubmitted = false;
   }, [route]);
@@ -101,10 +113,12 @@ const EditProfile = ({navigation, route}) => {
         </View>
         <View style={styles.Body}>
           <Input
+            value={name}
             config={config.fields.name}
             onChangeText={onNameChange}
             errorMessage={nameError}></Input>
           <Input
+            value={email}
             config={config.fields.email}
             onChangeText={onEmailChange}
             errorMessage={emailError}></Input>

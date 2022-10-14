@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  View,
   StyleSheet,
-  Text,
-  Image,
-  Keyboard,
   SafeAreaView,
 } from 'react-native';
-import {CSS_CONSTANTS} from '../utils/css-contants';
-import PageHeader from '../components/pageHeader';
+import { CSS_CONSTANTS } from '../utils/css-contants';
 import RideCard from '../components/RideCard';
 
 const config = {
@@ -34,7 +29,7 @@ const config = {
   },
 };
 
-const RideList = ({navigation, route}) => {
+const RideList = () => {
   return (
     <SafeAreaView>
       <RideCard style={styles.component} config={config.ride1}></RideCard>

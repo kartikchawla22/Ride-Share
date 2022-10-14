@@ -1,9 +1,9 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet, View, Image} from 'react-native';
-import {CSS_CONSTANTS} from '../utils/css-contants';
+import { Text, StyleSheet, View, Image } from 'react-native';
+import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const RideCard = props => {
-  const {config} = props;
+  const { config } = props;
   return (
     <View style={styles.rideCard}>
       <Image

@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, StyleSheet, Keyboard, Alert} from 'react-native';
+import { View, StyleSheet, Keyboard, Alert } from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button';
-import {CSS_CONSTANTS} from '../utils/css-contants';
-import {validate} from '../utils/validation-wrapper';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { CSS_CONSTANTS } from '../utils/css-contants';
+import { validate } from '../utils/validation-wrapper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
-import {CONSTANTS} from '../utils/contants';
-import {ScrollView} from 'react-native-gesture-handler';
+import { CONSTANTS } from '../utils/contants';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const config = {
   fields: {
@@ -57,26 +57,20 @@ const config = {
 };
 let formSubmitted = false;
 
-const ShareYourRidePage = ({navigation, route}) => {
+const ShareYourRidePage = ({ navigation, route }) => {
   const [vehicleNumber, onVehicleNumberChange] = React.useState(vehicleNumber);
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
   const [dateOfTravel, onDateOfTravelChange] = React.useState(dateOfTravel);
-  const [numberOfPassengersAllowed, onNumberOfPassengersAllowedChange] =
-    React.useState(numberOfPassengersAllowed);
+  const [numberOfPassengersAllowed, onNumberOfPassengersAllowedChange] = React.useState(numberOfPassengersAllowed);
   const [pricePerRider, onPricePerRiderChange] = React.useState(pricePerRider);
 
-  const [vehicleNumberError, setVehicleNumberError] =
-    React.useState(vehicleNumberError);
-  const [leavingFromError, setLeavingFromError] =
-    React.useState(leavingFromError);
+  const [vehicleNumberError, setVehicleNumberError] = React.useState(vehicleNumberError);
+  const [leavingFromError, setLeavingFromError] = React.useState(leavingFromError);
   const [goingToError, setGoingToError] = React.useState(goingToError);
-  const [dateOfTravelError, setDateOfTravelError] =
-    React.useState(dateOfTravelError);
-  const [numberOfPassengersAllowedError, setNumberOfPassengersAllowedError] =
-    React.useState(numberOfPassengersAllowedError);
-  const [pricePerRiderError, setPricePerRiderError] =
-    React.useState(pricePerRiderError);
+  const [dateOfTravelError, setDateOfTravelError] = React.useState(dateOfTravelError);
+  const [numberOfPassengersAllowedError, setNumberOfPassengersAllowedError] = React.useState(numberOfPassengersAllowedError);
+  const [pricePerRiderError, setPricePerRiderError] = React.useState(pricePerRiderError);
 
   const checkValidation = () => {
     Keyboard.dismiss();
@@ -90,24 +84,10 @@ const ShareYourRidePage = ({navigation, route}) => {
     setPricePerRiderError(validate('pricePerRider', pricePerRider));
     formSubmitted = true;
 
-    if (
-      !leavingFrom ||
-      !goingTo ||
-      !dateOfTravel ||
-      !vehicleNumber ||
-      !numberOfPassengersAllowed ||
-      !pricePerRider
-    ) {
+    if (!leavingFrom || !goingTo || !dateOfTravel || !vehicleNumber || !numberOfPassengersAllowed || !pricePerRider) {
       return;
     }
-    if (
-      !vehicleNumberError &&
-      !leavingFromError &&
-      !goingToError &&
-      !dateOfTravelError &&
-      !numberOfPassengersAllowedError &&
-      !pricePerRiderError
-    ) {
+    if (!vehicleNumberError && !leavingFromError && !goingToError && !dateOfTravelError && !numberOfPassengersAllowedError && !pricePerRiderError) {
       // navigation.navigate('Confirmation');
       Alert.alert('Congratulations', 'Your Ad is posted sucessfully', [
         {
@@ -115,7 +95,7 @@ const ShareYourRidePage = ({navigation, route}) => {
           onPress: () => {
             navigation.reset({
               index: 0,
-              routes: [{name: 'DrawerNavigationDelegate'}],
+              routes: [{ name: 'DrawerNavigationDelegate' }],
             });
           },
         },

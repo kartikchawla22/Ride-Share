@@ -8,13 +8,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Input from '../components/input';
-import CustomButton from '../components/button';
-import {CSS_CONSTANTS} from '../utils/css-contants';
-import {validate} from '../utils/validation-wrapper';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {CONSTANTS} from '../utils/contants';
-import {useIsFocused} from '@react-navigation/native';
-import {ScrollView} from 'react-native-gesture-handler';
+import CustomButton from '../components/button'
+import { CSS_CONSTANTS } from '../utils/css-contants';
+import { validate } from '../utils/validation-wrapper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { CONSTANTS } from '../utils/contants';
+import { useIsFocused } from "@react-navigation/native"
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const config = {
   fields: {
@@ -38,18 +39,8 @@ const config = {
   },
 };
 let formSubmitted = false;
-const LoginPage = ({navigation, route}) => {
-  const loginApi = async () => {
-    try {
-      const response = await fetch(
-        `https://script.google.com/macros/s/${route.params.APPCONFIG.apiUrl}/exec?email=${email}&password=${password}`,
-      );
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      return error;
-    }
-  };
+const LoginPage = ({ navigation, route }) => {
+  console.log("chekc")
   const isFocused = useIsFocused();
   const [email, onEmailChange] = React.useState(email);
   const [password, onPasswordChange] = React.useState(password);
@@ -65,8 +56,11 @@ const LoginPage = ({navigation, route}) => {
   const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
   const checkValidation = () => {
-    setEmailError(validate('email', email));
-    setPasswordError(validate('password', password));
+    console.log("chekc inside check validation")
+
+
+    setEmailError(validate('email', email))
+    setPasswordError(validate('password', password))
     formSubmitted = true;
     if (!email || !password) {
       return;
@@ -74,24 +68,29 @@ const LoginPage = ({navigation, route}) => {
     setTimeout(() => {
       if (!emailError && !passwordError && formSubmitted) {
         setIsLoading(true);
-        loginApi()
-          .then(res => {
+        auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
             setIsLoading(false);
-
-            if (res.status === 'Error') {
-              setApiErrorMessage(res.data.message);
-              setWrongEmailOrPassword(true);
-            } else {
+            const user = userCredential.user;
+            console.log(user);
+            firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.uid).get().then(result => {
               Keyboard.dismiss();
               navigation.reset({
                 routes: [
-                  {name: 'DrawerNavigationDelegate', params: res.data[0]},
+                  { name: 'DrawerNavigationDelegate' }
                 ],
-              });
-            }
+              })
+            })
           })
-          .catch(alert);
+          .catch((error) => {
+            setIsLoading(false);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage)
+          });
       }
+      // firestore().collection('Users').doc('ABC').get();
     }, 0);
   };
 
@@ -153,30 +152,15 @@ const LoginPage = ({navigation, route}) => {
             onChangeText={onPasswordChange}
             errorMessage={passwordError}></Input>
         </View>
-        {isLoading ? (
-          <View style={styles.loader}>
-            <ActivityIndicator
-              size="large"
-              color={CSS_CONSTANTS.COLOR_PRIMARY}
-            />
-          </View>
-        ) : null}
-        <View style={styles.buttonsContainer}>
-          <CustomButton
-            onPress={checkValidation}
-            config={config.submitButton}></CustomButton>
-        </View>
-        {/* <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText}>Forgot Your Password</Text></View> */}
-        <View style={styles.forgotPasswordTextContainer}>
-          <Text
-            onPress={() => {
-              Keyboard.dismiss();
-              navigation.navigate('SignUp', {...route.params});
-            }}
-            style={styles.forgotPasswordText}>
-            Sign up
-          </Text>
-        </View>
+        {isLoading ? <View style={styles.loader} >
+          <ActivityIndicator size="large" color={CSS_CONSTANTS.COLOR_PRIMARY} />
+        </View> : null}
+        <View style={styles.buttonsContainer}><CustomButton onPress={checkValidation} config={config.submitButton}></CustomButton></View>
+        <View style={styles.forgotPasswordTextContainer}><Text style={styles.forgotPasswordText} onPress={() => { navigation.navigate('ForgotPassword') }}>Forgot Your Password</Text></View>
+        <View style={styles.forgotPasswordTextContainer}><Text onPress={() => {
+          Keyboard.dismiss();
+          navigation.navigate('SignUp')
+        }} style={styles.forgotPasswordText}>Sign up</Text></View>
       </View>
     </SafeAreaView>
   );
