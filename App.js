@@ -5,11 +5,11 @@
  */
 
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
-import type { Node } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useState, useEffect} from 'react';
+import type {Node} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginPage from './src/screens/Loginpage';
 import SignupPage from './src/screens/signup-page';
@@ -24,15 +24,16 @@ import RideList from './src/screens/RideList';
 import SearchList from './src/screens/SearchList';
 import SplashScreen from './src/screens/SplashScreen';
 
-
 import auth from '@react-native-firebase/auth';
 import ForgotPasswordPage from './src/screens/forgot-password';
+import {
+  requestUserPermission,
+  notificationListener,
+} from './src/utils/push-notification-helper';
 
 const Stack = createStackNavigator();
-const App: () => Node = ({ navigation }) => {
-
+const App: () => Node = ({navigation}) => {
   let initialRouteName = 'Login';
-
 
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -43,6 +44,11 @@ const App: () => Node = ({ navigation }) => {
     setUser(user);
     if (initializing) setInitializing(false);
   }
+
+  useEffect(() => {
+    requestUserPermission();
+    notificationListener();
+  }, []);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -61,7 +67,7 @@ const App: () => Node = ({ navigation }) => {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={initialRouteName}
-          screenOptions={{ headerShown: false }}>
+          screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />
           <Stack.Screen name="Splash" component={SplashScreen} />
