@@ -10,6 +10,8 @@ import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
 import { CONSTANTS } from '../utils/contants';
 import { ScrollView } from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const config = {
   fields: {
@@ -61,7 +63,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   const [vehicleNumber, onVehicleNumberChange] = React.useState(vehicleNumber);
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
-  const [dateOfTravel, onDateOfTravelChange] = React.useState(dateOfTravel);
+  const [dateOfTravel, onDateOfTravelChange] = React.useState(new Date());
   const [numberOfPassengersAllowed, onNumberOfPassengersAllowedChange] = React.useState(numberOfPassengersAllowed);
   const [pricePerRider, onPricePerRiderChange] = React.useState(pricePerRider);
 
@@ -83,23 +85,38 @@ const ShareYourRidePage = ({ navigation, route }) => {
     );
     setPricePerRiderError(validate('pricePerRider', pricePerRider));
     formSubmitted = true;
-
     if (!leavingFrom || !goingTo || !dateOfTravel || !vehicleNumber || !numberOfPassengersAllowed || !pricePerRider) {
       return;
     }
+
     if (!vehicleNumberError && !leavingFromError && !goingToError && !dateOfTravelError && !numberOfPassengersAllowedError && !pricePerRiderError) {
-      // navigation.navigate('Confirmation');
-      Alert.alert('Congratulations', 'Your Ad is posted sucessfully', [
-        {
-          Text: 'Ok',
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'DrawerNavigationDelegate' }],
-            });
-          },
-        },
-      ]);
+      firestore()
+        .collection(CONSTANTS.RIDES_COLLECTION)
+        .add({
+          leavingFrom,
+          goingTo,
+          dateOfTravel: firestore.Timestamp.fromDate(new Date(dateOfTravel.toDateString())),
+          vehicleNumber,
+          numberOfPassengersAllowed,
+          pricePerRider,
+          createdByUserEmail: auth().currentUser.email,
+          createdByUserName: auth().currentUser.displayName,
+          createdByUid: auth().currentUser.uid,
+          bookedBy: []
+        })
+        .then((res) => {
+          Alert.alert('Congratulations', 'Your Ad is posted sucessfully', [
+            {
+              Text: 'Ok',
+              onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'DrawerNavigationDelegate' }],
+                });
+              },
+            },
+          ]);
+        })
     }
   };
 
@@ -108,37 +125,37 @@ const ShareYourRidePage = ({ navigation, route }) => {
   }, [route]);
 
   React.useEffect(() => {
-    if (vehicleNumber === '') {
+    if (vehicleNumber === '' || !vehicleNumber) {
       onVehicleNumberChange(null);
     }
-    if (formSubmitted) {
+    else {
       setVehicleNumberError(validate('vehicleNumber', vehicleNumber));
     }
   }, [vehicleNumber]);
 
   React.useEffect(() => {
-    if (leavingFrom === null) {
+    if (leavingFrom === null || !leavingFrom) {
       onLeavingFromChange(null);
     }
-    if (formSubmitted) {
+    else {
       setLeavingFromError(validate('leavingFrom', leavingFrom));
     }
   }, [leavingFrom]);
 
   React.useEffect(() => {
-    if (goingTo === null) {
+    if (goingTo === null || !goingTo) {
       onGoingToChange(null);
     }
-    if (formSubmitted) {
+    else {
       setGoingToError(validate('goingTo', goingTo));
     }
   }, [goingTo]);
 
   React.useEffect(() => {
-    if (numberOfPassengersAllowed === '') {
+    if (numberOfPassengersAllowed === '' || !numberOfPassengersAllowed) {
       onNumberOfPassengersAllowedChange(null);
     }
-    if (formSubmitted) {
+    else {
       setNumberOfPassengersAllowedError(
         validate('numberOfPassengersAllowed', numberOfPassengersAllowed),
       );
@@ -146,19 +163,19 @@ const ShareYourRidePage = ({ navigation, route }) => {
   }, [numberOfPassengersAllowed]);
 
   React.useEffect(() => {
-    if (pricePerRider === '') {
+    if (pricePerRider === '' || !pricePerRider) {
       onPricePerRiderChange(null);
     }
-    if (formSubmitted) {
+    else {
       setPricePerRiderError(validate('pricePerRider', pricePerRider));
     }
   }, [pricePerRider]);
 
   React.useEffect(() => {
-    if (dateOfTravel === '') {
+    if (dateOfTravel === '' || !dateOfTravel) {
       onPricePerRiderChange(null);
     }
-    if (formSubmitted) {
+    else {
       setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     }
   }, [dateOfTravel]);

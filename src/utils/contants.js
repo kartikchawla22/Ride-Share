@@ -2,6 +2,7 @@ export const CONSTANTS = {
     EMAIL: "kchawla1995@gmail.com",
     PASSWORD: "password",
     USER_COLLECTION: "Users",
+    RIDES_COLLECTION: "Rides",
     ONTARIO_CITIES: [
         {
             "label": "Barrie",

@@ -45,7 +45,7 @@ let formSubmitted = false;
 const SearchRide = ({ navigation, route }) => {
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
-  const [dateOfTravel, onDateOfTravelChange] = React.useState(dateOfTravel);
+  const [dateOfTravel, onDateOfTravelChange] = React.useState(new Date());
 
   const [leavingFromError, setLeavingFromError] = React.useState(leavingFromError);
   const [goingToError, setGoingToError] = React.useState(goingToError);
@@ -62,12 +62,9 @@ const SearchRide = ({ navigation, route }) => {
       return;
     }
 
-    setTimeout(() => {
-      console.log(leavingFromError, goingToError, dateOfTravelError);
-      if (!leavingFromError && !goingToError && !dateOfTravelError) {
-        navigation.navigate('SearchList');
-      }
-    }, 0);
+    if (!leavingFromError && !goingToError && !dateOfTravelError) {
+      navigation.navigate('SearchList', { leavingFrom, goingTo, dateOfTravel: dateOfTravel.toDateString() });
+    }
   };
 
   React.useEffect(() => {
@@ -75,28 +72,28 @@ const SearchRide = ({ navigation, route }) => {
   }, [route]);
 
   React.useEffect(() => {
-    if (leavingFrom === null) {
+    if (leavingFrom === null || !leavingFrom) {
       onLeavingFromChange(null);
     }
-    if (formSubmitted) {
+    else {
       setLeavingFromError(validate('leavingFrom', leavingFrom));
     }
   }, [leavingFrom]);
 
   React.useEffect(() => {
-    if (goingTo === null) {
+    if (goingTo === null || !goingTo) {
       onGoingToChange(null);
     }
-    if (formSubmitted) {
+    else {
       setGoingToError(validate('goingTo', goingTo));
     }
   }, [goingTo]);
 
   React.useEffect(() => {
-    if (dateOfTravel === '') {
+    if (dateOfTravel === '' || !dateOfTravel) {
       onDateOfTravelChange(null);
     }
-    if (formSubmitted) {
+    else {
       setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     }
   }, [dateOfTravel]);

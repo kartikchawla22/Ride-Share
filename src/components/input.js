@@ -12,7 +12,6 @@ const Input = (props) => {
             setType("password")
         }
     }
-    console.log(config.editable);
 
     return (
         <View style={styles.container}>
@@ -57,8 +56,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F6F6F6",
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: "#E8E8E8",
-
+        borderColor: "#E8E8E8"
     },
     inputField: {
         padding: 15,

@@ -1,29 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { CSS_CONSTANTS } from '../utils/css-contants';
-import DatePicker from 'react-native-datepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 
 const DatePickerComponent = (props) => {
     const { config, errorMessage } = props;
+    const [showPicker, setShowPicker] = useState(false)
+    const [dateValue, setDateValue] = useState(new Date())
+    const onChange = (event, selectedDate) => {
+        setShowPicker(false)
+        if (event?.type === 'dismissed') {
+            setDateValue(dateValue);
+            return;
+        }
+        props.onDateChange(selectedDate)
+        setDateValue(selectedDate);
+    };
     return (
         <View style={styles.container}>
             <View style={[styles.inputContainer, !!errorMessage ? styles.hasError : null]}>
-                <DatePicker
-                    style={{ width: "100%" }}
-                    mode="datetime"
-                    placeholder={config.placeholder}
-                    format="YYYY-MM-DD \at h:m A"
-                    minDate={new Date()}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    showIcon={false}
-                    allowFontScaling={true}
-                    customStyles={styles.inputField}
-                    onDateChange={props.onDateChange}
-                    date={props.date}
-                />
-
+                {showPicker &&
+                    <DateTimePicker
+                        minimumDate={new Date()}
+                        positiveButtonLabel="Confirm"
+                        negativeButtonLabel="Cancel"
+                        mode='date'
+                        onChange={onChange}
+                        value={dateValue}
+                    />
+                }
+                <Text onPress={() => setShowPicker(true)} style={styles.inputField}>{dateValue.toDateString()}</Text>
             </View>
             {!!errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
         </View>
@@ -42,23 +50,15 @@ const styles = StyleSheet.create({
         width: '90%',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: CSS_CONSTANTS.GREY_BACKGROUND,
+        backgroundColor: "#F6F6F6",
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: "#E8E8E8",
-        paddingLeft: 15,
+        borderColor: "#E8E8E8"
     },
     inputField: {
-        dateInput: {
-            borderWidth: 0,
-            alignItems: "flex-start",
-        },
-        dateText: {
-            fontSize: 15
-        },
-        placeholderText: {
-            fontSize: 15
-        },
+        padding: 15,
+        fontSize: 15,
+        width: '100%',
     },
     hasError: {
         borderColor: CSS_CONSTANTS.ERROR_COLOR

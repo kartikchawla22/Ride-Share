@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import Input from '../components/input';
 import CustomButton from '../components/button'
 import { CSS_CONSTANTS } from '../utils/css-contants';
-import validate from '../utils/validation-wrapper';
+import { validate } from '../utils/validation-wrapper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from "@react-navigation/native"
 import auth from '@react-native-firebase/auth';
@@ -37,48 +37,25 @@ const ForgotPasswordPage = ({ navigation, route }) => {
 
     const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
-    const checkValidation = () => {
+    const checkValidation = async () => {
 
         setEmailError(validate('email', email))
         formSubmitted = true;
         if (!email) {
             return;
         }
-        setTimeout(async () => {
-            if (!emailError && formSubmitted) {
-                setIsLoading(true);
-                try {
-                    const response = await auth().sendPasswordResetEmail(email);
-                    console.log("Response:  ", response);
-                } catch (e) {
-                    console.log("Error: ", e);
-                }
-
-                setIsLoading(false);
-                // auth().signInWithEmailAndPassword(email, password)
-                //     .then((userCredential) => {
-                //         // Signed in 
-                //         setIsLoading(false);
-                //         const user = userCredential.user;
-                //         console.log(user);
-                //         firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.uid).get().then(result => {
-                //             Keyboard.dismiss();
-                //             navigation.reset({
-                //                 routes: [
-                //                     { name: 'DrawerNavigationDelegate' }
-                //                 ],
-                //             })
-                //         })
-                //     })
-                //     .catch((error) => {
-                //         setIsLoading(false);
-                //         const errorCode = error.code;
-                //         const errorMessage = error.message;
-                //         alert(errorMessage)
-                //     });
+        if (!emailError) {
+            setIsLoading(true);
+            try {
+                const response = await auth().sendPasswordResetEmail(email);
+                console.log("Response:  ", response);
+            } catch (e) {
+                console.log("Error: ", e);
             }
-            // firestore().collection('Users').doc('ABC').get();
-        }, 0);
+
+            setIsLoading(false);
+
+        }
     }
 
     const refreshPage = () => {
@@ -93,10 +70,10 @@ const ForgotPasswordPage = ({ navigation, route }) => {
     }, [isFocused]);
 
     React.useEffect(() => {
-        if (email === "") {
+        if (email === "" || !email) {
             onEmailChange(null)
         }
-        if (formSubmitted) {
+        else {
             setEmailError(validate('email', email))
         }
     }, [email]);

@@ -59,7 +59,8 @@ const SignupPage = ({ navigation, route }) => {
     const [apiErrorMessage = '', setApiErrorMessage] = React.useState(apiErrorMessage);
     const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
-    const checkValidation = () => {
+    const checkValidation = async () => {
+
         setEmailError(validate('email', email))
         setPasswordError(validate('password', password))
         setNameError(validate('name', name))
@@ -68,72 +69,77 @@ const SignupPage = ({ navigation, route }) => {
         if (!email || !password || !confirmPassword || !name) {
             return;
         }
-        setTimeout(() => {
-            if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
-                setIsLoading(true);
-                auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then((user) => {
-                        firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.user.uid).set({
-                            userName: name,
-                            profilePicURL: ""
-                        }).then((res) => {
-                            console.log(res);
-                            setIsLoading(false);
-                            navigation.reset({
-                                routes: [
-                                    { name: 'Login' }
-                                ],
-                            })
+
+        if (!emailError && !passwordError && !nameError && !confirmPasswordError) {
+            setIsLoading(true);
+
+            auth()
+                .createUserWithEmailAndPassword(email, password)
+                .then((user) => {
+                    user.user.updateProfile({
+                        displayName: name
+                    })
+                    firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.user.uid).set({
+                        userName: name,
+                        profilePicURL: ""
+                    }).then((res) => {
+                        setIsLoading(false);
+                        navigation.reset({
+                            routes: [
+                                { name: 'Login' }
+                            ],
                         })
                     })
-                    .catch(error => {
-                        setIsLoading(false);
-                        if (error.code === 'auth/email-already-in-use') {
-                            setApiErrorMessage('That email address is already in use!');
-                        }
+                })
+                .catch(error => {
+                    setIsLoading(false);
+                    if (error.code === 'auth/email-already-in-use') {
+                        setApiErrorMessage('That email address is already in use!');
+                    }
 
-                        if (error.code === 'auth/invalid-email') {
-                            setApiErrorMessage('That email address is invalid!');
-                        }
-                    })
-            }
-        }, 0);
+                    if (error.code === 'auth/invalid-email') {
+                        setApiErrorMessage('That email address is invalid!');
+                    }
+                })
+        }
     }
 
     React.useEffect(() => {
         formSubmitted = false;
+        setEmailError(null)
+        setPasswordError(null)
+        setNameError(null)
+        setConfirmPasswordError(null)
     }, [route]);
 
     React.useEffect(() => {
-        if (email === '') {
+        if (email === '' || !email) {
             onEmailChange(null);
-        }
-        if (formSubmitted) {
+        } else {
             setEmailError(validate('email', email));
         }
     }, [email]);
     React.useEffect(() => {
-        if (name === '') {
+        if (name === '' || !name) {
             onNameChange(null);
         }
-        if (formSubmitted) {
+        else {
             setNameError(validate('name', name));
         }
     }, [name]);
     React.useEffect(() => {
-        if (password === '') {
+        if (password === '' || !password) {
             onPasswordChange(null);
         }
-        if (formSubmitted) {
+        else {
             setPasswordError(validate('password', password));
         }
     }, [password]);
     React.useEffect(() => {
-        if (confirmPassword === '') {
+        if (confirmPassword === '' || !confirmPassword) {
             onConfirmPasswordChange(null);
         }
-        if (formSubmitted) {
+        else {
             setConfirmPasswordError(validateConfirmPassword(['confirmPassword', 'password'], [confirmPassword, password]));
         }
     }, [confirmPassword]);

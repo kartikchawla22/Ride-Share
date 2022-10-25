@@ -75,18 +75,19 @@ const EditProfile = ({ navigation, route }) => {
   }, [route]);
 
   React.useEffect(() => {
-    if (email === '') {
+    if (email === '' || !email) {
       onEmailChange(null);
     }
-    if (formSubmitted) {
+    else {
       setEmailError(validate('email', email));
     }
   }, [email]);
+
   React.useEffect(() => {
-    if (name === '') {
+    if (name === '' || !name) {
       onNameChange(null);
     }
-    if (formSubmitted) {
+    else {
       setNameError(validate('name', name));
     }
   }, [name]);

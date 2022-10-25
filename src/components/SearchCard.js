@@ -7,17 +7,17 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-const SearchCard = props => {
-  const { config } = props;
+const SearchCard = (props) => {
+  const { ride } = props;
   return (
     <SafeAreaView style={styles.SearchCard}>
-      <Image style={styles.userprofile} source={config.source}></Image>
+      <Image style={styles.userprofile} source={ride.profilePic ? ride.profilePic : require('../Assets/userprofile.png')}></Image>
 
       <View style={styles.textItems}>
-        <Text style={styles.UserText}> {config.UserName} </Text>
-        <Text style={styles.textstyle}> From : {config.LeavingFrom} </Text>
-        <Text style={styles.textstyle}> To : {config.GoingTo} </Text>
-        <Text style={styles.textstyle}> {config.DateTime} </Text>
+        <Text style={styles.UserText}> {ride.createdByUserName} </Text>
+        <Text style={styles.textstyle}> From : {ride.leavingFrom} </Text>
+        <Text style={styles.textstyle}> To : {ride.goingTo} </Text>
+        <Text style={styles.textstyle}> On: {ride.dateOfTravel.toDate().toDateString()} </Text>
       </View>
     </SafeAreaView>
   );

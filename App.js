@@ -5,11 +5,11 @@
  */
 
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
-import type {Node} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, { useState, useEffect } from 'react';
+import type { Node } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginPage from './src/screens/Loginpage';
 import SignupPage from './src/screens/signup-page';
@@ -32,7 +32,7 @@ import {
 } from './src/utils/push-notification-helper';
 
 const Stack = createStackNavigator();
-const App: () => Node = ({navigation}) => {
+const App: () => Node = ({ navigation }) => {
   let initialRouteName = 'Login';
 
   const [initializing, setInitializing] = useState(true);
@@ -40,7 +40,6 @@ const App: () => Node = ({navigation}) => {
 
   // Handle user state changes
   function onAuthStateChanged(user) {
-    console.log(user);
     setUser(user);
     if (initializing) setInitializing(false);
   }
@@ -67,7 +66,7 @@ const App: () => Node = ({navigation}) => {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={initialRouteName}
-          screenOptions={{headerShown: false}}>
+          screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />
           <Stack.Screen name="Splash" component={SplashScreen} />

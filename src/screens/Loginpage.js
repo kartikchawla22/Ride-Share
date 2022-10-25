@@ -40,7 +40,6 @@ const config = {
 };
 let formSubmitted = false;
 const LoginPage = ({ navigation, route }) => {
-  console.log("chekc")
   const isFocused = useIsFocused();
   const [email, onEmailChange] = React.useState(email);
   const [password, onPasswordChange] = React.useState(password);
@@ -56,42 +55,36 @@ const LoginPage = ({ navigation, route }) => {
   const [isLoading = false, setIsLoading] = React.useState(isLoading);
 
   const checkValidation = () => {
-    console.log("chekc inside check validation")
-
-
     setEmailError(validate('email', email))
     setPasswordError(validate('password', password))
     formSubmitted = true;
     if (!email || !password) {
       return;
     }
-    setTimeout(() => {
-      if (!emailError && !passwordError && formSubmitted) {
-        setIsLoading(true);
-        auth().signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Signed in 
-            setIsLoading(false);
-            const user = userCredential.user;
-            console.log(user);
-            firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.uid).get().then(result => {
-              Keyboard.dismiss();
-              navigation.reset({
-                routes: [
-                  { name: 'DrawerNavigationDelegate' }
-                ],
-              })
+    if (!emailError && !passwordError && formSubmitted) {
+      setIsLoading(true);
+      auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signed in 
+          setIsLoading(false);
+          const user = userCredential.user;
+          firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.uid).get().then(result => {
+            Keyboard.dismiss();
+            navigation.reset({
+              routes: [
+                { name: 'DrawerNavigationDelegate' }
+              ],
             })
           })
-          .catch((error) => {
-            setIsLoading(false);
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorMessage)
-          });
-      }
-      // firestore().collection('Users').doc('ABC').get();
-    }, 0);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage)
+        });
+    }
+    // firestore().collection('Users').doc('ABC').get();
   };
 
   const refreshPage = () => {
@@ -109,20 +102,20 @@ const LoginPage = ({ navigation, route }) => {
   }, [isFocused]);
 
   React.useEffect(() => {
-    if (email === '') {
+    if (email === '' || !email) {
       onEmailChange(null);
     }
-    if (formSubmitted) {
+    else {
       setEmailError(validate('email', email));
     }
     setWrongEmailOrPassword(false);
   }, [email]);
 
   React.useEffect(() => {
-    if (password === '') {
+    if (password === '' || !password) {
       onPasswordChange(null);
     }
-    if (formSubmitted) {
+    else {
       setPasswordError(validate('password', password));
     }
     setWrongEmailOrPassword(false);

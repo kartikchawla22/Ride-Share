@@ -19,7 +19,6 @@ const config = {
 }
 
 const HomePage = ({ navigation }) => {
-    console.log("home", auth().currentUser.email);
     return (
         <SafeAreaView>
             <View style={styles.container}>
