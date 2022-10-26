@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { CONSTANTS } from '../utils/contants';
+import { getFcmToken } from '../utils/push-notification-helper';
 
 const config = {
     fields: {
@@ -51,6 +52,7 @@ const SignupPage = ({ navigation, route }) => {
     const [password, onPasswordChange] = React.useState(password);
     const [name, onNameChange] = React.useState(name);
     const [confirmPassword, onConfirmPasswordChange] = React.useState(confirmPassword);
+    const [token, setToken] = useState("");
 
     const [emailError, setEmailError] = React.useState(emailError);
     const [passwordError, setPasswordError] = React.useState(passwordError);
@@ -58,9 +60,15 @@ const SignupPage = ({ navigation, route }) => {
     const [confirmPasswordError, setConfirmPasswordError] = React.useState(confirmPasswordError);
     const [apiErrorMessage = '', setApiErrorMessage] = React.useState(apiErrorMessage);
     const [isLoading = false, setIsLoading] = React.useState(isLoading);
+    useEffect(() => {
+        const getToken = async () => {
+            const FCMtoken = await getFcmToken()
+            setToken(FCMtoken)
+        }
+        getToken()
+    })
 
     const checkValidation = async () => {
-
         setEmailError(validate('email', email))
         setPasswordError(validate('password', password))
         setNameError(validate('name', name))
@@ -81,7 +89,8 @@ const SignupPage = ({ navigation, route }) => {
                     })
                     firestore().collection(CONSTANTS.USER_COLLECTION).doc(user.user.uid).set({
                         userName: name,
-                        profilePicURL: ""
+                        profilePicURL: "",
+                        token: token
                     }).then((res) => {
                         setIsLoading(false);
                         navigation.reset({

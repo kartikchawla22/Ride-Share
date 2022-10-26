@@ -13,7 +13,7 @@ export async function requestUserPermission() {
   }
 }
 
-async function getFcmToken() {
+export async function getFcmToken() {
   let fcmToken = await AsyncStorage.getItem('fcmToken');
   console.log(fcmToken, 'old Token');
 
@@ -24,10 +24,12 @@ async function getFcmToken() {
         console.log(fcmToken, 'newToken');
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
+      return fcmToken;
     } catch (error) {
       console.log(error, 'error in fcm token');
     }
   }
+  return fcmToken;
 }
 
 export const notificationListener = () => {

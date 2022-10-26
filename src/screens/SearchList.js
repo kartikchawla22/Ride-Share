@@ -6,7 +6,7 @@ import PageHeader from '../components/pageHeader';
 import firestore from '@react-native-firebase/firestore';
 import { CONSTANTS } from '../utils/contants';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
-
+import auth from '@react-native-firebase/auth';
 
 const config = {
   header: {
@@ -32,7 +32,7 @@ const SearchList = ({ navigation, route }) => {
       .where('dateOfTravel', '<', firestore.Timestamp.fromDate(new Date(new Date(dateOfTravel).setUTCHours(23, 59, 59, 999))))
       .get()
       .then((res) => {
-        const ridesResult = res.docs.map((r) => { return { ...r.data(), rideID: r.id } });
+        const ridesResult = res.docs.map((r) => { return { ...r.data(), rideID: r.id } }).filter((ride) => ride.createdByUid != auth().currentUser.uid);
         setRides([...ridesResult])
         ridesResultArr = ridesResult
       }).catch((e) => {
@@ -48,7 +48,7 @@ const SearchList = ({ navigation, route }) => {
           <FlatList
             data={rides}
             renderItem={({ item, index }) => (
-              <SearchCard ride={item} key={index} />
+              <SearchCard ride={item} key={index} navigation={navigation} />
             )}
           /> : <Text style={styles.noDataText}>No Result Found</Text>
         }

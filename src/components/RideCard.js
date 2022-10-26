@@ -13,7 +13,7 @@ const RideCard = props => {
       <View style={styles.textView}>
         <Text style={styles.textStyle}>From : {config.LeavingCity}</Text>
         <Text style={styles.textStyle}> To : {config.GoingTo}</Text>
-        <Text style={styles.textStyle}> {config.DateTime}</Text>
+        <Text style={styles.textStyle}>{config.DateTime}</Text>
       </View>
     </View>
   );

@@ -30,6 +30,7 @@ import {
   requestUserPermission,
   notificationListener,
 } from './src/utils/push-notification-helper';
+import RideDetails from './src/screens/ride-details';
 
 const Stack = createStackNavigator();
 const App: () => Node = ({ navigation }) => {
@@ -83,6 +84,7 @@ const App: () => Node = ({ navigation }) => {
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="RideList" component={RideList} />
           <Stack.Screen name="SearchList" component={SearchList} />
+          <Stack.Screen name="RideDetails" component={RideDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

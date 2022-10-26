@@ -5,20 +5,26 @@ import {
   Image,
   View,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 
 const SearchCard = (props) => {
-  const { ride } = props;
+  console.log(ride);
+  const { ride, navigation } = props;
+  const handleClick = () => {
+    navigation.navigate('RideDetails', { ride })
+  }
   return (
     <SafeAreaView style={styles.SearchCard}>
-      <Image style={styles.userprofile} source={ride.profilePic ? ride.profilePic : require('../Assets/userprofile.png')}></Image>
-
-      <View style={styles.textItems}>
-        <Text style={styles.UserText}> {ride.createdByUserName} </Text>
-        <Text style={styles.textstyle}> From : {ride.leavingFrom} </Text>
-        <Text style={styles.textstyle}> To : {ride.goingTo} </Text>
-        <Text style={styles.textstyle}> On: {ride.dateOfTravel.toDate().toDateString()} </Text>
-      </View>
+      <TouchableOpacity style={styles.SearchCard} onPress={handleClick}>
+        <Image style={styles.userprofile} source={ride.profilePic ? ride.profilePic : require('../Assets/userprofile.png')}></Image>
+        <View style={styles.textItems}>
+          <Text style={styles.UserText}> {ride.createdByUserName} </Text>
+          <Text style={styles.textstyle}> From : {ride.leavingFrom} </Text>
+          <Text style={styles.textstyle}> To : {ride.goingTo} </Text>
+          <Text style={styles.textstyle}> On: {ride.dateOfTravel.toDate().toDateString()} </Text>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
