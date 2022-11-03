@@ -116,7 +116,7 @@ const EditProfile = ({ navigation, route }) => {
           <Text
             style={styles.editButton}
             onPress={async () => {
-              const url = await ImageUploader()
+              const url = await ImageUploader('profileImages')
               if (url) {
                 setProfileImage(url)
               }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import ImageUploader from '../utils/image-upload';
+import storage from '@react-native-firebase/storage';
 const config = {
   header: {
     title: 'Kartik Chawla',
@@ -28,8 +29,11 @@ const ProfilePage = ({ navigation }) => {
             <Text style={styles.textStyle}>Edit Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              alert('Add doccuments');
+            onPress={async () => {
+              const url = await ImageUploader('docs')
+              if (url) {
+                Alert.alert('Success', 'Your document is being verified');
+              }
             }}>
             <Text style={styles.textStyle}>Add Documents</Text>
           </TouchableOpacity>

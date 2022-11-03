@@ -3,14 +3,14 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 
 
-const ImageUploader = async () => {
+const ImageUploader = async (path) => {
     console.log('here');
     const result = await launchCamera();
     if (result.didCancel) {
         return
     }
-    await storage().ref(`profileImages/${auth().currentUser.uid}`).putFile(result.assets[0].uri)
-    const ref = storage().ref(`profileImages/${auth().currentUser.uid}`);
+    await storage().ref(`${path}/${auth().currentUser.uid}`).putFile(result.assets[0].uri)
+    const ref = storage().ref(`${path}/${auth().currentUser.uid}`);
     const url = await ref.getDownloadURL()
     return url
 
