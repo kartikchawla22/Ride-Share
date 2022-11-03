@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 const SearchCard = (props) => {
-  console.log(ride);
   const { ride, navigation } = props;
   const handleClick = () => {
     navigation.navigate('RideDetails', { ride })

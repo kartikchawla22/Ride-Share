@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ProfilePage from '../screens/profilePage';
 import RideList from '../screens/RideList';
 import auth from '@react-native-firebase/auth';
+import YourBookingsPage from '../screens/your-bookings';
 
 const Drawer = createDrawerNavigator();
 
@@ -61,6 +62,15 @@ const DrawerNavigationDelegate = ({ navigation, route }) => {
           options={{
             drawerLabel: 'Your Rides',
             title: 'Your Rides',
+          }}
+          initialParams={params}
+        />
+        <Drawer.Screen
+          name="YourBookings"
+          component={YourBookingsPage}
+          options={{
+            drawerLabel: 'Your Bookings',
+            title: 'Your Bookings',
           }}
           initialParams={params}
         />

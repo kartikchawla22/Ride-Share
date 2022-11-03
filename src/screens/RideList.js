@@ -1,41 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
+  View,
+  FlatList,
+  Text
 } from 'react-native';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 import RideCard from '../components/RideCard';
 
-const config = {
-  ride1: {
-    LeavingCity: 'Barrie',
-    GoingTo: 'Toronto',
-    DateTime: '20 June 2022 5 pm',
-  },
-  ride2: {
-    LeavingCity: 'Toronto',
-    GoingTo: 'Barrie',
-    DateTime: '18 June 2022 7 pm',
-  },
-  ride3: {
-    LeavingCity: 'Toronto',
-    GoingTo: 'Barrie',
-    DateTime: '17 June 2022 7 pm',
-  },
-  ride4: {
-    LeavingCity: 'Toronto',
-    GoingTo: 'Barrie',
-    DateTime: '16 June 2022 7 pm',
-  },
-};
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { CONSTANTS } from '../utils/contants';
+
 
 const RideList = () => {
+  const [rides, setRides] = useState([]);
+  useEffect(() => {
+    firestore().collection(CONSTANTS.RIDES_COLLECTION).where('createdByUid', '==', auth().currentUser.uid).get().then((response) => {
+      response.docs.forEach((ride) => {
+        setRides(rides.concat({ ...ride.data(), dateOfTravel: ride.data().dateOfTravel.toDate().toDateString() }))
+      })
+    }).catch(e => console.log(e))
+  }, [])
   return (
     <SafeAreaView>
-      <RideCard style={styles.component} config={config.ride1}></RideCard>
-      <RideCard style={styles.component} config={config.ride2}></RideCard>
-      <RideCard style={styles.component} config={config.ride3}></RideCard>
-      <RideCard style={styles.component} config={config.ride4}></RideCard>
+      <View style={styles.container}>
+        {rides.length > 0 ?
+          <FlatList
+            data={rides}
+            renderItem={({ item, index }) => (
+              <RideCard ride={item} key={index} />
+            )}
+          /> : <Text style={styles.noDataText}>No Result Found</Text>
+        }
+      </View>
     </SafeAreaView>
   );
 };

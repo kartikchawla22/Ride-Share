@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Image } from 'react-native';
 import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const RideCard = props => {
-  const { config } = props;
+  const { ride, isBooking } = props;
   return (
     <View style={styles.rideCard}>
       <Image
@@ -11,9 +11,12 @@ const RideCard = props => {
         source={require('./../Assets/carRide.png')}
       />
       <View style={styles.textView}>
-        <Text style={styles.textStyle}>From : {config.LeavingCity}</Text>
-        <Text style={styles.textStyle}> To : {config.GoingTo}</Text>
-        <Text style={styles.textStyle}>{config.DateTime}</Text>
+        {isBooking && (<Text style={styles.textStyle}>Name: {ride.createdByUserName}</Text>)}
+        <Text style={styles.textStyle}>From : {ride.leavingFrom}</Text>
+        <Text style={styles.textStyle}>To : {ride.goingTo}</Text>
+        <Text style={styles.textStyle}>{ride.dateOfTravel}</Text>
+        {isBooking && (<Text style={styles.textStyle}>Price: {ride.pricePerRider}</Text>)}
+
       </View>
     </View>
   );
@@ -26,7 +29,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     margin: 10,
-
     backgroundColor: CSS_CONSTANTS.GREY_BACKGROUND,
     borderRadius: 20,
   },

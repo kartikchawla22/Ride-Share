@@ -20,7 +20,6 @@ const config = {
 
 const RideDetails = ({ navigation, route }) => {
     const { ride } = route.params;
-    console.log(ride);
     const bookRide = () => {
         // Save to firebase
         const booking = firestore().collection(CONSTANTS.USER_COLLECTION).doc(auth().currentUser.uid);
@@ -29,7 +28,6 @@ const RideDetails = ({ navigation, route }) => {
             .collection(CONSTANTS.RIDES_COLLECTION).doc(ride.rideID).update({
                 bookedBy: ride.bookedBy
             })
-        console.log(ride.bookedBy);
     }
     return (
         <SafeAreaView>
