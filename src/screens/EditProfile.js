@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +13,8 @@ import { validate } from '../utils/validation-wrapper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { CONSTANTS } from '../utils/contants';
+import ImageUploader from '../utils/image-upload';
+import storage from '@react-native-firebase/storage';
 
 const config = {
   fields: {
@@ -43,16 +45,19 @@ const config = {
 const EditProfile = ({ navigation, route }) => {
   const [email, onEmailChange] = React.useState(auth().currentUser.email);
   const [name, onNameChange] = React.useState(name);
+  const [profileImage, setProfileImage] = React.useState('')
 
   const [emailError, setEmailError] = React.useState(emailError);
   const [nameError, setNameError] = React.useState(nameError);
 
-
+  useEffect(() => {
+    const image = storage().ref(`profileImages/${auth().currentUser.uid}`);
+    image.getDownloadURL().then(setProfileImage);
+  }, [])
+  let formSubmitted = false;
   const checkValidation = async () => {
     setEmailError(validate('email', email));
-
     setNameError(validate('name', name));
-
     formSubmitted = true;
     if (!email || !name) {
       return;
@@ -100,14 +105,21 @@ const EditProfile = ({ navigation, route }) => {
             config={config.header}></PageHeader>
         </View>
         <View style={styles.container}>
+
           <Image
             style={styles.profile}
-            source={require('./../Assets/profile.png')}
+            source={{
+              uri: profileImage,
+              cache: 'reload'
+            }}
           />
           <Text
             style={styles.editButton}
-            onPress={() => {
-              alert('select Photo');
+            onPress={async () => {
+              const url = await ImageUploader()
+              if (url) {
+                setProfileImage(url)
+              }
             }}>
             Edit Profile Picture
           </Text>
