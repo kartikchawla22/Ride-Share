@@ -32,6 +32,7 @@ const SearchList = ({ navigation, route }) => {
       .where('dateOfTravel', '<', firestore.Timestamp.fromDate(new Date(new Date(dateOfTravel).setUTCHours(23, 59, 59, 999))))
       .get()
       .then((res) => {
+        console.log(res.docs);
         const ridesResult = res.docs.map((r) => { return { ...r.data(), rideID: r.id } }).filter((ride) => ride.createdByUid != auth().currentUser.uid);
         setRides([...ridesResult])
         ridesResultArr = ridesResult

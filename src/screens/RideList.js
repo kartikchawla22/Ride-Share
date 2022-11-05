@@ -17,9 +17,11 @@ import { CONSTANTS } from '../utils/contants';
 const RideList = () => {
   const [rides, setRides] = useState([]);
   useEffect(() => {
+    let ridesArr = []
     firestore().collection(CONSTANTS.RIDES_COLLECTION).where('createdByUid', '==', auth().currentUser.uid).get().then((response) => {
       response.docs.forEach((ride) => {
-        setRides(rides.concat({ ...ride.data(), dateOfTravel: ride.data().dateOfTravel.toDate().toDateString() }))
+        ridesArr = ridesArr.concat({ ...ride.data(), dateOfTravel: ride.data().dateOfTravel.toDate().toDateString() })
+        setRides(ridesArr)
       })
     }).catch(e => console.log(e))
   }, [])

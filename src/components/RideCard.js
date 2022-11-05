@@ -4,6 +4,7 @@ import { CSS_CONSTANTS } from '../utils/css-contants';
 
 const RideCard = props => {
   const { ride, isBooking } = props;
+  console.log(ride);
   return (
     <View style={styles.rideCard}>
       <Image

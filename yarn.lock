@@ -1341,37 +1341,34 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
-"@react-native-firebase/app@^16.4.2":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-16.4.2.tgz#4635562afecf026233b1a3730a155dbc70ec8557"
-  integrity sha512-puuIW23PmS3svYtqJfVvnsOd2I6vE3DPWTpYuv8e34K+D9iTUiBW6XbiRDqFefXP3QHKvTRJAqNpRtMGybf0Uw==
+"@react-native-firebase/app@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-15.7.1.tgz#38dcd32ee558b73264b23bb917c335207f47d928"
+  integrity sha512-azC2kWvaAfg04G/LURdDBq4L9IvrMLxSx7pcoMT4T2dW9r8RmnSZeD7LhtL4OAuNPZogSrE+ZQaPmi5VmkLqZQ==
   dependencies:
     "@expo/config-plugins" "^5.0.1"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^16.4.2":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-16.4.2.tgz#b6daecc553fd82ef328ed4427b075a4beb5ff34b"
-  integrity sha512-dmXFJjxE6IlfHoDNAFczmRH7WpAEoxpZH/J7kCGrzOY5X/fKedCOA2R8CDxCfmvX51ww9ANtjiTA9bS75zZNeg==
-  dependencies:
-    "@expo/config-plugins" "^5.0.1"
-    plist "^3.0.5"
+"@react-native-firebase/auth@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-15.7.1.tgz#6bfc3be0f1bc3503382593a9c9dbd08b4e21e07e"
+  integrity sha512-KtxVcoIpZX5aT0rNaHWo733dP8cCZUBNV90FboapyvasQ5qZdMu+xS2yYe8FdimUlMlzGhMmLyXTxghGmVIZjw==
 
-"@react-native-firebase/firestore@^16.4.2":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-16.4.2.tgz#476e758272e6ef69553b91b08091c63b6c573e92"
-  integrity sha512-mNHUzIukGLxaYKe8uXC20np4of/r08vntOaoIZn/waBY48aYEhGm/mnMuTdYgI0Qh9vVWT+3r3SvnlngXmt91w==
+"@react-native-firebase/firestore@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-15.7.1.tgz#5ad80f89fb26d89dc12250542775c0b58d60a2c4"
+  integrity sha512-TEEGOA0kSND/uuPXasLhVDyv656hH3LYCWWbd2NnrmMbcEn84/Q+8DKcaNGHvGcgYjo3KPhvNFjAnYMY/5J9UQ==
 
-"@react-native-firebase/messaging@^16.4.2":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-16.4.2.tgz#92291ccf749917f5609d146dd1ccbeddf125493a"
-  integrity sha512-CjMqg7fWajxDYL60d6ceAFHBP9YpSdjeCR8RwuyCQYeVtTDkMrmMz34ExUPbicDU5t6UKND1DnH0Bx/Q0nIQjQ==
+"@react-native-firebase/messaging@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-15.7.1.tgz#12640336517e345e5db0805fe4ea8605234bbd79"
+  integrity sha512-5f/YqgMu3zWLUNiXb1A4yqd6e4w3WNbBsMqKAsH18z7TLEw0O7DjEELfWF8T3x7M9o+/xSB8wLAXTlyakjq24A==
 
-"@react-native-firebase/storage@^16.4.2":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-16.4.2.tgz#d7bb2be0b16c23365c58024469a8d91a42231df1"
-  integrity sha512-wSBRE/Ny4wVnhbGe0zu1Sr+fBkwXmnxWHsLkAf4Y1qP1IdM5EuuInuIEwjY9+9TzkvefUBO4zrYW5DqkdVF96w==
+"@react-native-firebase/storage@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-15.7.1.tgz#6a4958be38f727e9e9f4d97b2fa5fd47f26f514f"
+  integrity sha512-NRXE+jjLRWi7i8AvUA8W7ixcC7aGaQlOOz3jLPaphDGxoXFlHpssittOVJDVOWJ8kuMweywZrh+m7GvVVsUcoQ==
 
 "@react-native-picker/picker@^1.8.3":
   version "1.16.8"
@@ -1670,9 +1667,9 @@
     eslint-visitor-keys "^1.1.0"
 
 "@xmldom/xmldom@~0.7.0":
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.8.tgz#a8d0a0067c9554c187b0d04e86ad1845053c0e06"
-  integrity sha512-PrJx38EfpitFhwmILRl37jAdBlsww6AZ6rRVK4QS7T7RHLhX7mSs647sTmgr9GIxe3qjXdesmomEgbgaokrVFg==
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.9.tgz#7f9278a50e737920e21b297b8a35286e9942c056"
+  integrity sha512-yceMpm/xd4W2a85iqZyO09gTnHvXF6pyiWjD2jcOJs7hRoZtNNOO1eJlhHj1ixA+xip2hOyGn+LgcvLCMo5zXA==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"
