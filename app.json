@@ -1,4 +1,8 @@
 {
   "name": "rideShare",
-  "displayName": "rideShare"
+  "displayName": "rideShare",
+
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7703161815773120~3592604613"
+  }
 }

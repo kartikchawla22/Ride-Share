@@ -1,17 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, Keyboard, Alert } from 'react-native';
+import {View, StyleSheet, Keyboard, Alert} from 'react-native';
 import Input from '../components/input';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button';
-import { CSS_CONSTANTS } from '../utils/css-contants';
-import { validate } from '../utils/validation-wrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {CSS_CONSTANTS} from '../utils/css-contants';
+import {validate} from '../utils/validation-wrapper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
-import { CONSTANTS } from '../utils/contants';
-import { ScrollView } from 'react-native-gesture-handler';
+import {CONSTANTS} from '../utils/contants';
+import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {
+  InterstitialAd,
+  AdEventType,
+  TestIds,
+} from 'react-native-google-mobile-ads';
 
 const config = {
   fields: {
@@ -59,20 +64,45 @@ const config = {
 };
 let formSubmitted = false;
 
-const ShareYourRidePage = ({ navigation, route }) => {
+const ShareYourRidePage = ({navigation, route}) => {
   const [vehicleNumber, onVehicleNumberChange] = React.useState(vehicleNumber);
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
   const [dateOfTravel, onDateOfTravelChange] = React.useState(new Date());
-  const [numberOfPassengersAllowed, onNumberOfPassengersAllowedChange] = React.useState(numberOfPassengersAllowed);
+  const [numberOfPassengersAllowed, onNumberOfPassengersAllowedChange] =
+    React.useState(numberOfPassengersAllowed);
   const [pricePerRider, onPricePerRiderChange] = React.useState(pricePerRider);
 
-  const [vehicleNumberError, setVehicleNumberError] = React.useState(vehicleNumberError);
-  const [leavingFromError, setLeavingFromError] = React.useState(leavingFromError);
+  const [vehicleNumberError, setVehicleNumberError] =
+    React.useState(vehicleNumberError);
+  const [leavingFromError, setLeavingFromError] =
+    React.useState(leavingFromError);
   const [goingToError, setGoingToError] = React.useState(goingToError);
-  const [dateOfTravelError, setDateOfTravelError] = React.useState(dateOfTravelError);
-  const [numberOfPassengersAllowedError, setNumberOfPassengersAllowedError] = React.useState(numberOfPassengersAllowedError);
-  const [pricePerRiderError, setPricePerRiderError] = React.useState(pricePerRiderError);
+  const [dateOfTravelError, setDateOfTravelError] =
+    React.useState(dateOfTravelError);
+  const [numberOfPassengersAllowedError, setNumberOfPassengersAllowedError] =
+    React.useState(numberOfPassengersAllowedError);
+  const [pricePerRiderError, setPricePerRiderError] =
+    React.useState(pricePerRiderError);
+
+  const adUnitId = TestIds.INTERSTITIAL;
+  const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+  });
+  React.useEffect(() => {
+    const eventListener = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        interstitial.show();
+      },
+    );
+    // Start loading the interstitial straight away
+    interstitial.load();
+    return () => {
+      eventListener = null;
+    };
+  }, []);
 
   const checkValidation = () => {
     Keyboard.dismiss();
@@ -85,38 +115,54 @@ const ShareYourRidePage = ({ navigation, route }) => {
     );
     setPricePerRiderError(validate('pricePerRider', pricePerRider));
     formSubmitted = true;
-    if (!leavingFrom || !goingTo || !dateOfTravel || !vehicleNumber || !numberOfPassengersAllowed || !pricePerRider) {
+    if (
+      !leavingFrom ||
+      !goingTo ||
+      !dateOfTravel ||
+      !vehicleNumber ||
+      !numberOfPassengersAllowed ||
+      !pricePerRider
+    ) {
       return;
     }
 
-    if (!vehicleNumberError && !leavingFromError && !goingToError && !dateOfTravelError && !numberOfPassengersAllowedError && !pricePerRiderError) {
+    if (
+      !vehicleNumberError &&
+      !leavingFromError &&
+      !goingToError &&
+      !dateOfTravelError &&
+      !numberOfPassengersAllowedError &&
+      !pricePerRiderError
+    ) {
       firestore()
         .collection(CONSTANTS.RIDES_COLLECTION)
         .add({
           leavingFrom,
           goingTo,
-          dateOfTravel: firestore.Timestamp.fromDate(new Date(dateOfTravel.toDateString())),
+          dateOfTravel: firestore.Timestamp.fromDate(
+            new Date(dateOfTravel.toDateString()),
+          ),
           vehicleNumber,
           numberOfPassengersAllowed,
           pricePerRider,
           createdByUserEmail: auth().currentUser.email,
           createdByUserName: auth().currentUser.displayName,
           createdByUid: auth().currentUser.uid,
-          bookedBy: []
+          bookedBy: [],
         })
-        .then((res) => {
+        .then(res => {
           Alert.alert('Congratulations', 'Your Ad is posted sucessfully', [
             {
               Text: 'Ok',
               onPress: () => {
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: 'DrawerNavigationDelegate' }],
+                  routes: [{name: 'DrawerNavigationDelegate'}],
                 });
               },
             },
           ]);
-        })
+        });
     }
   };
 
@@ -127,8 +173,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (vehicleNumber === '' || !vehicleNumber) {
       onVehicleNumberChange(null);
-    }
-    else {
+    } else {
       setVehicleNumberError(validate('vehicleNumber', vehicleNumber));
     }
   }, [vehicleNumber]);
@@ -136,8 +181,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (leavingFrom === null || !leavingFrom) {
       onLeavingFromChange(null);
-    }
-    else {
+    } else {
       setLeavingFromError(validate('leavingFrom', leavingFrom));
     }
   }, [leavingFrom]);
@@ -145,8 +189,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (goingTo === null || !goingTo) {
       onGoingToChange(null);
-    }
-    else {
+    } else {
       setGoingToError(validate('goingTo', goingTo));
     }
   }, [goingTo]);
@@ -154,8 +197,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (numberOfPassengersAllowed === '' || !numberOfPassengersAllowed) {
       onNumberOfPassengersAllowedChange(null);
-    }
-    else {
+    } else {
       setNumberOfPassengersAllowedError(
         validate('numberOfPassengersAllowed', numberOfPassengersAllowed),
       );
@@ -165,8 +207,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (pricePerRider === '' || !pricePerRider) {
       onPricePerRiderChange(null);
-    }
-    else {
+    } else {
       setPricePerRiderError(validate('pricePerRider', pricePerRider));
     }
   }, [pricePerRider]);
@@ -174,8 +215,7 @@ const ShareYourRidePage = ({ navigation, route }) => {
   React.useEffect(() => {
     if (dateOfTravel === '' || !dateOfTravel) {
       onPricePerRiderChange(null);
-    }
-    else {
+    } else {
       setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     }
   }, [dateOfTravel]);

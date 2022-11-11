@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, Keyboard} from 'react-native';
 import PageHeader from '../components/pageHeader';
 import CustomButton from '../components/button';
-import { CSS_CONSTANTS } from '../utils/css-contants';
-import { validate } from '../utils/validation-wrapper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {CSS_CONSTANTS} from '../utils/css-contants';
+import {validate} from '../utils/validation-wrapper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DatePickerComponent from '../components/date-picker';
 import DropdownComponent from '../components/dropdown';
-import { CONSTANTS } from '../utils/contants';
-import { ScrollView } from 'react-native-gesture-handler';
+import {CONSTANTS} from '../utils/contants';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const config = {
   fields: {
@@ -42,14 +42,16 @@ const config = {
 };
 let formSubmitted = false;
 
-const SearchRide = ({ navigation, route }) => {
+const SearchRide = ({navigation, route}) => {
   const [leavingFrom, onLeavingFromChange] = React.useState(leavingFrom);
   const [goingTo, onGoingToChange] = React.useState(goingTo);
   const [dateOfTravel, onDateOfTravelChange] = React.useState(new Date());
 
-  const [leavingFromError, setLeavingFromError] = React.useState(leavingFromError);
+  const [leavingFromError, setLeavingFromError] =
+    React.useState(leavingFromError);
   const [goingToError, setGoingToError] = React.useState(goingToError);
-  const [dateOfTravelError, setDateOfTravelError] = React.useState(dateOfTravelError);
+  const [dateOfTravelError, setDateOfTravelError] =
+    React.useState(dateOfTravelError);
 
   const checkValidation = () => {
     Keyboard.dismiss();
@@ -63,7 +65,11 @@ const SearchRide = ({ navigation, route }) => {
     }
 
     if (!leavingFromError && !goingToError && !dateOfTravelError) {
-      navigation.navigate('SearchList', { leavingFrom, goingTo, dateOfTravel: dateOfTravel.toDateString() });
+      navigation.navigate('SearchList', {
+        leavingFrom,
+        goingTo,
+        dateOfTravel: dateOfTravel.toDateString(),
+      });
     }
   };
 
@@ -74,8 +80,7 @@ const SearchRide = ({ navigation, route }) => {
   React.useEffect(() => {
     if (leavingFrom === null || !leavingFrom) {
       onLeavingFromChange(null);
-    }
-    else {
+    } else {
       setLeavingFromError(validate('leavingFrom', leavingFrom));
     }
   }, [leavingFrom]);
@@ -83,8 +88,7 @@ const SearchRide = ({ navigation, route }) => {
   React.useEffect(() => {
     if (goingTo === null || !goingTo) {
       onGoingToChange(null);
-    }
-    else {
+    } else {
       setGoingToError(validate('goingTo', goingTo));
     }
   }, [goingTo]);
@@ -92,8 +96,7 @@ const SearchRide = ({ navigation, route }) => {
   React.useEffect(() => {
     if (dateOfTravel === '' || !dateOfTravel) {
       onDateOfTravelChange(null);
-    }
-    else {
+    } else {
       setDateOfTravelError(validate('dateOfTravel', dateOfTravel));
     }
   }, [dateOfTravel]);

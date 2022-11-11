@@ -5,11 +5,11 @@
  */
 
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
-import type { Node } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useState, useEffect} from 'react';
+import type {Node} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginPage from './src/screens/Loginpage';
 import SignupPage from './src/screens/signup-page';
@@ -31,9 +31,10 @@ import {
   notificationListener,
 } from './src/utils/push-notification-helper';
 import RideDetails from './src/screens/ride-details';
+import mobileAds, {MaxAdContentRating} from 'react-native-google-mobile-ads';
 
 const Stack = createStackNavigator();
-const App: () => Node = ({ navigation }) => {
+const App: () => Node = ({navigation}) => {
   let initialRouteName = 'Login';
 
   const [initializing, setInitializing] = useState(true);
@@ -50,6 +51,28 @@ const App: () => Node = ({ navigation }) => {
     notificationListener();
   }, []);
 
+  mobileAds()
+    .setRequestConfiguration({
+      // Update all future requests suitable for parental guidance
+      maxAdContentRating: MaxAdContentRating.PG,
+      // Indicates that you want the ad request to be handled in a
+      // manner suitable for users under the age of consent.
+      tagForUnderAgeOfConsent: true,
+      // An array of test device IDs to allow.
+      testDeviceIdentifiers: ['EMULATOR'],
+    })
+    .then(() => {
+      // Request config successfully set!
+      console.log('request config successfully set');
+    });
+
+  mobileAds()
+    .initialize()
+    .then(adapterStatuses => {
+      // Initialization complete!
+      console.log('Mobile Ads are initialized');
+    });
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
@@ -62,12 +85,13 @@ const App: () => Node = ({ navigation }) => {
   } else {
     initialRouteName = 'DrawerNavigationDelegate';
   }
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={initialRouteName}
-          screenOptions={{ headerShown: false }}>
+          screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignupPage} />
           <Stack.Screen name="Splash" component={SplashScreen} />
