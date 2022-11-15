@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import SearchCard from '../components/SearchCard';
 import PageHeader from '../components/pageHeader';
 import firestore from '@react-native-firebase/firestore';
-import { CONSTANTS } from '../utils/contants';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
+import {CONSTANTS} from '../utils/contants';
+import {Text, View, FlatList, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 const config = {
@@ -15,44 +15,63 @@ const config = {
   },
 };
 
-const SearchList = ({ navigation, route }) => {
-  const [rides, setRides] = useState([])
+const SearchList = ({navigation, route}) => {
+  const [rides, setRides] = useState([]);
+
   let ridesResultArr = [];
-  const { goingTo, leavingFrom, dateOfTravel } = route.params;
+  const {goingTo, leavingFrom, dateOfTravel} = route.params;
   if (!leavingFrom || !goingTo || !dateOfTravel) {
     navigation.goBack();
     return;
   }
+
   useEffect(() => {
     firestore()
       .collection(CONSTANTS.RIDES_COLLECTION)
       .where('goingTo', '==', goingTo)
       .where('leavingFrom', '==', leavingFrom)
-      .where('dateOfTravel', '>=', firestore.Timestamp.fromDate(new Date(dateOfTravel)))
-      .where('dateOfTravel', '<', firestore.Timestamp.fromDate(new Date(new Date(dateOfTravel).setUTCHours(23, 59, 59, 999))))
+      .where(
+        'dateOfTravel',
+        '>=',
+        firestore.Timestamp.fromDate(new Date(dateOfTravel)),
+      )
+      .where(
+        'dateOfTravel',
+        '<',
+        firestore.Timestamp.fromDate(
+          new Date(new Date(dateOfTravel).setUTCHours(23, 59, 59, 999)),
+        ),
+      )
       .get()
-      .then((res) => {
+      .then(res => {
         console.log(res.docs);
-        const ridesResult = res.docs.map((r) => { return { ...r.data(), rideID: r.id } }).filter((ride) => ride.createdByUid != auth().currentUser.uid);
-        setRides([...ridesResult])
-        ridesResultArr = ridesResult
-      }).catch((e) => {
-        console.log(e);
+        const ridesResult = res.docs
+          .map(r => {
+            return {...r.data(), rideID: r.id};
+          })
+          .filter(ride => ride.createdByUid != auth().currentUser.uid);
+        setRides([...ridesResult]);
+        ridesResultArr = ridesResult;
       })
+      .catch(e => {
+        console.log(e);
+      });
   }, []);
 
   return (
     <SafeAreaView>
       <PageHeader navigation={navigation} config={config.header}></PageHeader>
       <View style={styles.container}>
-        {rides.length > 0 ?
+        {rides.length > 0 ? (
           <FlatList
             data={rides}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <SearchCard ride={item} key={index} navigation={navigation} />
             )}
-          /> : <Text style={styles.noDataText}>No Result Found</Text>
-        }
+          />
+        ) : (
+          <Text style={styles.noDataText}>No Result Found</Text>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -65,8 +84,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noDataText: {
-    marginTop: "30%",
-    fontSize: 30
-  }
+    marginTop: '30%',
+    fontSize: 30,
+  },
 });
 export default SearchList;
