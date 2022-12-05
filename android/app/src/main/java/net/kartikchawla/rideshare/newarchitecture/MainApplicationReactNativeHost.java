@@ -1,4 +1,4 @@
-package com.rideshare.newarchitecture;
+package net.kartikchawla.rideshare.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.rideshare.BuildConfig;
-import com.rideshare.newarchitecture.components.MainComponentsRegistry;
-import com.rideshare.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import net.kartikchawla.rideshare.BuildConfig;
+import net.kartikchawla.rideshare.newarchitecture.components.MainComponentsRegistry;
+import net.kartikchawla.rideshare.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

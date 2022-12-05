@@ -10,7 +10,7 @@ const SplashScreen = ({ navigation }) => {
         navigation.reset({
             index: 0,
             routes: [
-                { name: 'Login', params: { APPCONFIG: result } }
+                { name: 'Login' }
             ],
         })
     }, []);

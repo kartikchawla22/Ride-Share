@@ -1,17 +1,14 @@
-package com.rideshare;
+package net.kartikchawla.rideshare;
 
-import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
-import com.facebook.soloader.SoLoader;
-import com.rideshare.newarchitecture.MainApplicationReactNativeHost;
+import net.kartikchawla.rideshare.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -75,7 +72,7 @@ public class MainApplication extends NavigationApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.rideshare.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("net.kartikchawla.rideshare.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

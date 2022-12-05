@@ -39,7 +39,7 @@ const config = {
   },
 };
 let formSubmitted = false;
-const LoginPage = ({ navigation, route }) => {
+const LoginPage = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [email, onEmailChange] = React.useState(email);
   const [password, onPasswordChange] = React.useState(password);
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20
   },
   buttonsContainer: {
     alignItems: 'center',

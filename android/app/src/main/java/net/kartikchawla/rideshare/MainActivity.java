@@ -1,4 +1,4 @@
-package com.rideshare;
+package net.kartikchawla.rideshare;
 
 import com.facebook.react.ReactActivity;
 import com.reactnativenavigation.NavigationActivity;

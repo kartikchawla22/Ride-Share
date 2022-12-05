@@ -20,13 +20,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff',
         width: "80%",
-        height: 60,
         alignItems: 'center',
         padding: 10,
     },
     roundedButton: {
         borderRadius: 100,
-        height: 40,
     },
     smallFont: {
         fontSize: 16

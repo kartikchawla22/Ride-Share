@@ -1,4 +1,4 @@
-package com.rideshare.newarchitecture.modules;
+package net.kartikchawla.rideshare.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

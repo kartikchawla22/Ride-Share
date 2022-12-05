@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageUploader from '../utils/image-upload';
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 const config = {
   header: {
     title: 'Kartik Chawla',
@@ -11,6 +12,13 @@ const config = {
 };
 
 const ProfilePage = ({ navigation }) => {
+  const [profileImage, setProfileImage] = React.useState('')
+
+  useEffect(() => {
+    const image = storage().ref(`profileImages/${auth().currentUser.uid}`);
+    image.getDownloadURL().then(setProfileImage);
+  }, [])
+
   return (
     <SafeAreaView
       style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
@@ -18,7 +26,11 @@ const ProfilePage = ({ navigation }) => {
         <View>
           <Image
             style={styles.photoStyle}
-            source={require('./../Assets/profile.png')}></Image>
+            source={{
+              uri: profileImage,
+              cache: 'reload'
+            }}
+          />
         </View>
         <View Style={styles.touchableOpacityStyle}>
           <TouchableOpacity

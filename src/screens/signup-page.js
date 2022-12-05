@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
+        marginTop: 20
     },
     header: {
         marginBottom: '10%',
