@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageUploader from '../utils/image-upload';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import { useIsFocused } from '@react-navigation/native';
 const config = {
   header: {
     title: 'Kartik Chawla',
@@ -12,12 +13,13 @@ const config = {
 };
 
 const ProfilePage = ({ navigation }) => {
+  const isFocused = useIsFocused()
   const [profileImage, setProfileImage] = React.useState('')
 
   useEffect(() => {
     const image = storage().ref(`profileImages/${auth().currentUser.uid}`);
     image.getDownloadURL().then(setProfileImage);
-  }, [])
+  }, [isFocused])
 
   return (
     <SafeAreaView
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    marginTop: 20
   },
   header: {
     marginBottom: 120,

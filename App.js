@@ -19,7 +19,6 @@ import ConfirmationPage from './src/screens/confirmation-page';
 import SearchRide from './src/screens/searchride';
 import DrawerNavigationDelegate from './src/utils/drawer-navigation-delegate';
 import ShareYourRidePage from './src/screens/share-your-ride-page';
-import profilePage from './src/screens/profilePage';
 import EditProfile from './src/screens/EditProfile';
 import RideList from './src/screens/RideList';
 import SearchList from './src/screens/SearchList';
@@ -105,7 +104,6 @@ const App: () => Node = ({ navigation }) => {
             component={DrawerNavigationDelegate}
           />
           <Stack.Screen name="ShareYourRide" component={ShareYourRidePage} />
-          <Stack.Screen name="Profile" component={profilePage} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="RideList" component={RideList} />
           <Stack.Screen name="SearchList" component={SearchList} />
